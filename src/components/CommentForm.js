@@ -15,10 +15,10 @@ class CommentForm extends Component {
         return (
             <Fragment>
                 <Typography component="h1" variant="title">Leave a new comment</Typography>
-                <Card style={{marginBottom:"10px"}}>
+                <Card className="comment-form">
                     <CardContent>            
                         <form onSubmit={this.handleSubmit} noValidate autoComplete="off">
-                            <Input name="body" value={this.state.body} onChange={this.handleChange} fullWidth multiline/> 
+                            <Input name="body" value={this.state.body} onChange={this.handleChange} fullWidth disableUnderline multiline/> 
                             <Button variant="contained" color="primary" onClick={this.addComment}>Add Comment</Button> 
                         </form>
                     </CardContent>

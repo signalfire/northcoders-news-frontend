@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment} from 'react';
 import {Route} from 'react-router-dom';
 
 import Header from './components/Header';
@@ -8,8 +8,6 @@ import Profile from './components/Profile';
 import Articles from './components/Articles'
 import Article from './components/Article';
 import Topics from './components/Topics';
-
-import './App.css';
 
 class App extends Component {
   state = {
@@ -23,17 +21,17 @@ class App extends Component {
   }
   render() {
     return (
-      <div className="App">
+      <Fragment>
         <Header/>        
         <Topics/>
-        <main>
+        <main class="app">
           <Route exact path="/" component={Home}/>
           <Route exact path="/articles" render={({match}) => <Articles match={match}/>}/>
           <Route path="/articles/:topic" render={({match}) => <Articles match={match}/>}/>
           <Route path="/article/:id" render={({match}) => <Article match={match} user={this.state.user}/>}/>
           <Route path="/profile/:username" render={({match}) => <Profile match={match}/>}/>
         </main>
-      </div>      
+      </Fragment>      
     );
   }
 }

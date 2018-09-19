@@ -15,15 +15,19 @@ class Article extends Component {
         const {article} = this.state;
         const {user} = this.props;
         return (
-            article && <div>
-                <Typography component="h1">{article.title}</Typography>
-                <button onClick={() => this.voteOnArticle('up', article)}>Up</button>
-                <button onClick={() => this.voteOnArticle('down', article)}>Down</button>
-                <Typography component="p">Votes: {article.votes}</Typography>
-                <Typography component="p">{article.body}</Typography>
-                <Link to={`/profile/${article.created_by.username}`}>{article.created_by.name}</Link>
-                {this.state.article && <Comments article={article} user={user}/>}
-            </div>
+            article && (
+                <div>
+                    <div className="full-article">
+                        <Typography variant="display1" component="h1">{article.title}</Typography>
+                        <button onClick={() => this.voteOnArticle('up', article)}>Up</button>
+                        <button onClick={() => this.voteOnArticle('down', article)}>Down</button>
+                        <Typography component="p">Votes: {article.votes}</Typography>
+                        <Typography component="p">{article.body}</Typography>
+                        <Link to={`/profile/${article.created_by.username}`}>{article.created_by.name}</Link>
+                    </div>
+                    {this.state.article && <Comments article={article} user={user}/>}
+                </div>
+            )
         );
     }
 
