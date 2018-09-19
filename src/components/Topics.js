@@ -12,7 +12,7 @@ class Topics extends Component {
         return (
             <Typography component="ul">
                 {this.state.topics.map(topic => {
-                    return(<Typography key={topic._id} component="li"><Link to={`/articles/${topic.slug}`}>{topic.title}</Link></Typography>)
+                    return(<Typography key={topic._id} component="li" style={{display:"inline-block"}}><Link to={`/articles/${topic.slug}`}>{topic.title}</Link></Typography>)
                 })}
             </Typography>
         );

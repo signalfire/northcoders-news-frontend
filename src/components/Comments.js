@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import Comment from './Comment';
 import CommentForm from './CommentForm';
 
+import Typography from '@material-ui/core/Typography';
+
 import produce from 'immer';
 import moment from 'moment';
 
@@ -19,10 +21,12 @@ class Comments extends Component {
         return (
             <Fragment>
                 {user && <CommentForm addComment={this.addComment}/>}
-                {comments && comments.map(comment => {
-                    return (
-                        <Comment key={comment._id} comment={comment} voteOnComment={this.voteOnComment}/>
-                    )
+                {comments && <Typography component="h1" variant="title">Previous Comments</Typography>}
+                {comments && 
+                    comments.map(comment => {
+                        return (
+                            <Comment key={comment._id} comment={comment} voteOnComment={this.voteOnComment}/>
+                        )
                 })}            
             </Fragment>
         );
@@ -37,7 +41,7 @@ class Comments extends Component {
         api.getArticleComments(article_id).then(response => {
             const {comments} = response.data;
             comments.sort((a, b) => { 
-                return moment(a).format('X') - moment(b).format('X');
+                return moment(b.created_at).format('X') - moment(a.created_at).format('X');
             })
             this.setState({comments});
         });
@@ -56,10 +60,9 @@ class Comments extends Component {
     }
 
     voteOnComment = (direction, comment) => {
-        console.log(direction, comment);
-        // api.updateCommentVote(comment._id, direction).then(response => {
-        //     this.getComments(comment.belongs_to);
-        // });
+        api.updateCommentVote(comment._id, direction).then(response => {
+            this.getComments(comment.belongs_to);
+        });
     }    
 }
 

@@ -9,6 +9,8 @@ import Articles from './components/Articles'
 import Article from './components/Article';
 import Topics from './components/Topics';
 
+import './App.css';
+
 class App extends Component {
   state = {
     user: {
@@ -21,14 +23,16 @@ class App extends Component {
   }
   render() {
     return (
-      <div>
+      <div className="App">
         <Header/>        
         <Topics/>
-        <Route exact path="/" component={Home}/>
-        <Route exact path="/articles" render={({match}) => <Articles match={match}/>}/>
-        <Route path="/articles/:topic" render={({match}) => <Articles match={match}/>}/>
-        <Route path="/article/:id" render={({match}) => <Article match={match} user={this.state.user}/>}/>
-        <Route path="/profile/:username" render={({match}) => <Profile match={match}/>}/>
+        <main>
+          <Route exact path="/" component={Home}/>
+          <Route exact path="/articles" render={({match}) => <Articles match={match}/>}/>
+          <Route path="/articles/:topic" render={({match}) => <Articles match={match}/>}/>
+          <Route path="/article/:id" render={({match}) => <Article match={match} user={this.state.user}/>}/>
+          <Route path="/profile/:username" render={({match}) => <Profile match={match}/>}/>
+        </main>
       </div>      
     );
   }
