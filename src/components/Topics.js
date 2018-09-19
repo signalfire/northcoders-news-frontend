@@ -12,8 +12,9 @@ class Topics extends Component {
         return (
             <div class="topics-bar">
                 <Typography component="ul">
+                    <Typography component="li"></Typography>
                     {this.state.topics.map(topic => {
-                        return(<Typography key={topic._id} component="li" style={{display:"inline-block"}}><Link to={`/articles/${topic.slug}`}>{topic.title}</Link></Typography>)
+                        return(<Typography key={topic._id} component="li"><Link to={`/articles/${topic.slug}`}>{topic.title}</Link></Typography>)
                     })}
                 </Typography>            
             </div>

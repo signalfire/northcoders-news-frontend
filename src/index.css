@@ -26,4 +26,8 @@ body {
 }
 .topics-bar li{
   margin-right:1rem;
+  display:inline-block;
+}
+.topics-bar li:last-child{
+  margin-right:0;
 }
