@@ -1,0 +1,28 @@
+import React, { Component } from 'react';
+import {Link} from 'react-router-dom';
+import Typography from '@material-ui/core/Typography';
+
+import * as api from '../utils/api';
+
+class Topics extends Component {
+    state = {
+        topics: []
+    }
+    render() {
+        return (
+            <Typography component="ul">
+                {this.state.topics.map(topic => {
+                    return(<Typography key={topic._id} component="li"><Link to={`/articles/${topic.slug}`}>{topic.title}</Link></Typography>)
+                })}
+            </Typography>
+        );
+    }
+    componentDidMount() {
+        api.getTopics().then(response => {
+            const {topics} = response.data;
+            this.setState({topics});
+        });
+    }
+}
+
+export default Topics;
