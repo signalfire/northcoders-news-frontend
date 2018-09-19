@@ -2,10 +2,22 @@ import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 
 import Typography from '@material-ui/core/Typography';
+import Avatar from '@material-ui/core/Avatar';
 
 import Comments from './Comments';
+import { withStyles } from '@material-ui/core/styles';
 
 import * as api from '../utils/api';
+
+const styles = {
+    title: {
+        textTransform:'capitalize'
+    },
+    bigAvatar: {
+        width: 60,
+        height: 60,
+    }
+}
 
 class Article extends Component {
     state = {
@@ -13,17 +25,19 @@ class Article extends Component {
     }
     render() {
         const {article} = this.state;
-        const {user} = this.props;
+        const {user, classes} = this.props;
         return (
             article && (
                 <div>
                     <div className="full-article">
-                        <Typography variant="display1" component="h1">{article.title}</Typography>
+                        <Typography variant="display1" className={classes.title} component="h1">{article.title.toLowerCase()}</Typography>
                         <button onClick={() => this.voteOnArticle('up', article)}>Up</button>
                         <button onClick={() => this.voteOnArticle('down', article)}>Down</button>
                         <Typography component="p">Votes: {article.votes}</Typography>
                         <Typography component="p">{article.body}</Typography>
-                        <Link to={`/profile/${article.created_by.username}`}>{article.created_by.name}</Link>
+                        <Link to={`/profile/${article.created_by.username}`}>
+                            <Avatar alt={article.created_by.name} src={`http://i.pravatar.cc/100?q=${article.created_by.username}`} className={classes.bigAvatar} />                        
+                        </Link>
                     </div>
                     {this.state.article && <Comments article={article} user={user}/>}
                 </div>
@@ -50,4 +64,4 @@ class Article extends Component {
     }
 }
 
-export default Article;
+export default withStyles(styles)(Article);

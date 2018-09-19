@@ -5,6 +5,15 @@ export default createMuiTheme({
         primary: {
             main: '#ff8b00',
         },
+    },
+    typography: {
+        htmlFontSize: 16,
+    },
+    props:{
+        MuiButtonBase:{
+            disableRipple:true,
+            color:'#fff'
+        }
     }    
 });
 

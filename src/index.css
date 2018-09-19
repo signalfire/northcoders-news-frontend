@@ -1,8 +1,6 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
-  font-size:16px;
 }
 .app{
   padding:1.5rem;
@@ -27,7 +25,24 @@ body {
 .topics-bar li{
   margin-right:1rem;
   display:inline-block;
+  font-size:1.2rem;
 }
 .topics-bar li:last-child{
   margin-right:0;
+}
+.topics-bar li.football:before{
+  font-family:"fontawesome";
+  content:"\f1e3";
+  margin-right:0.5rem;
+}
+.topics-bar li.coding:before{
+  font-family:"fontawesome";
+  content:"\f121";
+  margin-right:0.5rem;
+}
+.topics-bar li.cooking:before{
+  font-family:"fontawesome";
+  content:"\f094";
+  margin-right:0.5rem;
+
 }

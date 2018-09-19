@@ -7,8 +7,17 @@ import Typography from '@material-ui/core/Typography';
 
 import produce from 'immer';
 import moment from 'moment';
+import { withStyles } from '@material-ui/core/styles';
 
 import * as api from '../utils/api';
+
+
+const styles = {
+    title:{
+        marginBottom:'2rem',
+        fontSize:'1.5rem'
+    }
+}
 
 class Comments extends Component {
     state = {
@@ -17,11 +26,11 @@ class Comments extends Component {
 
     render() {
         const {comments} = this.state;
-        const {user} = this.props;
+        const {user, classes} = this.props;
         return (
             <Fragment>
                 {user && <CommentForm addComment={this.addComment}/>}
-                {comments && <Typography component="h1" variant="title">Previous Comments</Typography>}
+                {comments && <Typography component="h1" className={classes.title}>Previous Comments</Typography>}
                 {comments && 
                     comments.map(comment => {
                         return (
@@ -70,5 +79,4 @@ Comments.propTypes = {
     article: PropTypes.object.isRequired,
 }
 
-
-export default Comments;
+export default withStyles(styles)(Comments);
