@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import {Card, CardContent, Typography, Avatar, Grid} from '@material-ui/core';
+import { Card, CardContent, Typography, Avatar, Grid } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 import moment from 'moment';

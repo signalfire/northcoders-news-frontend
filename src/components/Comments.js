@@ -1,16 +1,16 @@
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
-import Comment from './Comment';
-import CommentForm from './CommentForm';
 
-import Typography from '@material-ui/core/Typography';
+import { Typography } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 
 import produce from 'immer';
 import moment from 'moment';
-import { withStyles } from '@material-ui/core/styles';
+
+import Comment from './Comment';
+import CommentForm from './CommentForm';
 
 import * as api from '../utils/api';
-
 
 const styles = {
     title:{

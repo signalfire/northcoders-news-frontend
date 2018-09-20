@@ -1,7 +1,7 @@
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
-import {Card, CardContent, CardActions, Typography, Avatar} from '@material-ui/core';
+import { Card, CardContent, CardActions, Typography, Avatar } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = {
