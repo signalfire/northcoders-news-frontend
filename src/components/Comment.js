@@ -1,12 +1,7 @@
 import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Typography from '@material-ui/core/Typography';
-import Avatar from '@material-ui/core/Avatar';
-
+import {Card, CardContent, CardActions, Typography, Avatar} from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = {
@@ -18,7 +13,6 @@ const styles = {
 
 const Comment = (props) => {
     const {comment, classes, voteOnComment, deleteComment, user} = props;
-
     return (
         <Fragment>
             <Card className={classes.card}>
