@@ -38,7 +38,7 @@ class Topics extends Component {
         topics: []
     }
     render() {
-        const {classes} = this.props;
+        const {classes, user} = this.props;
         return (
             <div className={classes.root}>
                 <Typography component="ul" className={classes.list}>

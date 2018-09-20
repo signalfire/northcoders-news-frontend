@@ -12,16 +12,16 @@ class ArticleForm extends Component {
         body: ''
     }
     render() {
-        const {classes, user} = this.props;
+        const {classes, user, togglePanel} = this.props;
         return (
             <Fragment>
-                <Typography component="h1" variant="display1">Add Article</Typography>
                 <Card>
                     <CardContent>            
                         <form onSubmit={this.handleSubmit}>
                             <Input name="title" placeholder="Enter title for article..." value={this.state.title} onChange={this.handleChange} fullWidth disableUnderline/> 
                             <Input name="body" placeholder="Enter body text for article..." value={this.state.body} onChange={this.handleChange} fullWidth disableUnderline multiline rows={5}/> 
-                            <Button variant="outlined" color="primary" fullWidth onClick={this.addArticle}>Add Article</Button> 
+                            <Button variant="outlined" color="primary" style={{marginRight:'1rem'}} onClick={this.addArticle}>Add Article</Button> 
+                            <Button variant="outlined" color="primary" onClick={togglePanel}>Cancel</Button> 
                         </form>
                     </CardContent>
                 </Card>
@@ -49,7 +49,8 @@ class ArticleForm extends Component {
 
 ArticleForm.propTypes = {
     user: PropTypes.object,
-    addArticle: PropTypes.func.isRequired
+    addArticle: PropTypes.func.isRequired,
+    togglePanel: PropTypes.func.isRequired
 }
 
 export default withStyles(styles)(ArticleForm);

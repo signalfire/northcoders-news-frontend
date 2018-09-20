@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -74,75 +74,73 @@ const styles = {
 
 class Articles extends Component {
     state = {
-        articles: []
+        articles: [],
+        panelOpen: false,
     }
     render() {
         const {topic} = this.props.match.params;
         const {classes, user} = this.props;
+        const {panelOpen} = this.state;
         return (
-            <Grid container spacing={24}>
-                <Grid item xs={12} sm={9}>
-                    <Typography variant="display1" component="h1">{topic ? topic : 'Latest'} Articles</Typography>
-                    {this.state.articles.length === 0 && <Typography component="p">Sorry, no articles found for {topic}</Typography>}
-                    {this.state.articles.map(article => {
-                        return (
-                            <Card key={article._id}>
-                                <CardContent>   
-                                    <Grid container spacing={24}>
-                                        <Grid item xs={12} sm={1}>
-                                            <Grid container direction="column" justify="center" alignItems="center">
-                                                <Grid>
-                                                    <Button variant="outlined" fullWidth onClick={() => this.voteOnArticle('up', article)} className={classes.voteUp}><i class="fa fa-thumbs-up"></i></Button>
-                                                </Grid>
-                                                <Grid>
-                                                    <Typography container="p" className={classes.votes}>{article.votes} Votes</Typography>
-                                                </Grid> 
-                                                <Grid>
-                                                    <Button variant="outlined" fullWidth onClick={() => this.voteOnArticle('down', article)} className={classes.voteDown}><i class="fa fa-thumbs-down"></i></Button>
-                                                </Grid>                                           
+            <Fragment>
+                <Typography variant="display1" component="h1">{topic ? topic : 'Latest'} Articles {topic && user && <i className={panelOpen ? 'fa fa-minus-circle' : 'fa fa-plus-circle'} onClick={this.togglePanel}></i>}</Typography>
+                {panelOpen && (<ArticleForm user={user} addArticle={this.addArticle} togglePanel={this.togglePanel}/>)}
+                {this.state.articles.length === 0 && <Typography component="p">Sorry, no articles found for {topic}</Typography>}
+                {this.state.articles.map(article => {
+                    return (
+                        <Card key={article._id}>
+                            <CardContent>   
+                                <Grid container spacing={24}>
+                                    <Grid item xs={12} sm={1}>
+                                        <Grid container direction="column" justify="center" alignItems="center">
+                                            <Grid>
+                                                <Button variant="outlined" fullWidth onClick={() => this.voteOnArticle('up', article)} className={classes.voteUp}><i className="fa fa-thumbs-up"></i></Button>
                                             </Grid>
+                                            <Grid>
+                                                <Typography container="p" className={classes.votes}>{article.votes} Votes</Typography>
+                                            </Grid> 
+                                            <Grid>
+                                                <Button variant="outlined" fullWidth onClick={() => this.voteOnArticle('down', article)} className={classes.voteDown}><i className="fa fa-thumbs-down"></i></Button>
+                                            </Grid>                                           
                                         </Grid>
-                                        <Grid item xs={12} sm={11}>
-                                            <Typography component="p" className={classes.topic}><strong>Topic</strong> {article.belongs_to}</Typography>                                             
-                                            <Typography component="h2" variant="display2" className={classes.title}>
-                                                <Link to={`/article/${article._id}`}>{article.title.toLowerCase()}</Link>
-                                            </Typography>  
-                                            <Typography component="p" className={classes.body}>{truncateString(article.body, 200)}</Typography>     
-                                            <Grid container spacing={24}>
-                                                <Grid item>
-                                                    <Avatar alt={article.created_by.name} src={`http://i.pravatar.cc/100?q=${article.created_by.username}`} className={classes.bigAvatar} />                                                                    
-                                                </Grid>
-                                                <Grid item>
-                                                    <Typography component="p" className={classes.meta}><strong>Created By</strong><Link to={`/profile/${article.created_by.username}`} className={classes.link}>{article.created_by.username}</Link></Typography>  
-                                                </Grid>
-                                                <Grid item>
-                                                    <div className={classes.rounded}>
-                                                        <i class="far fa-calendar-alt"></i>
-                                                    </div>
-                                                </Grid>
-                                                <Grid item>
-                                                    <Typography component="p" className={classes.meta}><strong>Published On</strong>{moment(article.created_at).format('DD/MM/YYYY HH:mm')}</Typography>                                              
-                                                </Grid>
-                                                <Grid item>
-                                                    <div className={classes.rounded}>
-                                                        <i class="fas fa-comments"></i>                                                    
-                                                    </div>                                            
-                                                </Grid>
-                                                <Grid item>
-                                                    <Typography component="p" className={classes.meta}><strong>Comments</strong>{article.comment_count} people have commented on this article</Typography>                                                                                          
-                                                </Grid>
+                                    </Grid>
+                                    <Grid item xs={12} sm={11}>
+                                        <Typography component="p" className={classes.topic}><strong>Topic</strong> {article.belongs_to}</Typography>                                             
+                                        <Typography component="h2" variant="display2" className={classes.title}>
+                                            <Link to={`/article/${article._id}`}>{article.title.toLowerCase()}</Link>
+                                        </Typography>  
+                                        <Typography component="p" className={classes.body}>{truncateString(article.body, 200)}</Typography>     
+                                        <Grid container spacing={24}>
+                                            <Grid item>
+                                                <Avatar alt={article.created_by.name} src={`http://i.pravatar.cc/100?q=${article.created_by.username}`} className={classes.bigAvatar} />                                                                    
+                                            </Grid>
+                                            <Grid item>
+                                                <Typography component="p" className={classes.meta}><strong>Created By</strong><Link to={`/profile/${article.created_by.username}`} className={classes.link}>{article.created_by.username}</Link></Typography>  
+                                            </Grid>
+                                            <Grid item>
+                                                <div className={classes.rounded}>
+                                                    <i className="far fa-calendar-alt"></i>
+                                                </div>
+                                            </Grid>
+                                            <Grid item>
+                                                <Typography component="p" className={classes.meta}><strong>Published On</strong>{moment(article.created_at).format('DD/MM/YYYY HH:mm')}</Typography>                                              
+                                            </Grid>
+                                            <Grid item>
+                                                <div className={classes.rounded}>
+                                                    <i className="fas fa-comments"></i>                                                    
+                                                </div>                                            
+                                            </Grid>
+                                            <Grid item>
+                                                <Typography component="p" className={classes.meta}><strong>Comments</strong>{article.comment_count} people have commented on this article</Typography>                                                                                          
                                             </Grid>
                                         </Grid>
                                     </Grid>
-                                </CardContent>
-                            </Card>
-                        )   
-                    })}
-                </Grid>
-                <Grid item xs={12} sm={3}>
-                    {user && (<ArticleForm user={user} addArticle={this.addArticle}/>)}
-                </Grid>
-            </Grid>
+                                </Grid>
+                            </CardContent>
+                        </Card>
+                    )   
+                })}
+            </Fragment>
         );
     }
 
@@ -188,6 +186,7 @@ class Articles extends Component {
                 })
             )
         })
+        this.closePanel();
     }
 
     voteOnArticle = (direction, article) => {
@@ -195,6 +194,10 @@ class Articles extends Component {
             this.getArticles();
         })
     }    
+
+    togglePanel = () => {
+        this.setState({panelOpen:!this.state.panelOpen})
+    }
 }
 
 Articles.propTypes = {

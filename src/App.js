@@ -23,14 +23,14 @@ class App extends Component {
     return (
       <Fragment>
         <Header user={this.state.user}/>        
-        <Topics/>
+        <Topics user={this.state.user}/>
         <main className="app">
           <Switch>
             <Route exact path="/" component={Home}/>
             <Route exact path="/articles" render={({match}) => <Articles match={match} user={this.state.user}/>}/>
             <Route path="/articles/:topic" render={({match}) => <Articles match={match} user={this.state.user}/>}/>
             <Route path="/article/:id" render={({match}) => <Article match={match} user={this.state.user}/>}/>
-            <Route path="/profile/:username" render={({match}) => <Profile match={match} user={this.state.user}/>}/>  
+            <Route path="/profile/:username" render={({match}) => <Profile match={match} user={this.state.user}/>}/> 
             <Route component={NotFound}/>      
           </Switch>        
         </main>
