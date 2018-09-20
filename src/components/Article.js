@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
-
-import Typography from '@material-ui/core/Typography';
-import Avatar from '@material-ui/core/Avatar';
-
-import Comments from './Comments';
-import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
+import {Typography, Avatar} from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+
+import Comments from './Comments';
 import * as api from '../utils/api';
 
 const styles = {
