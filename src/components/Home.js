@@ -6,7 +6,6 @@ import { withStyles } from '@material-ui/core/styles';
 const styles = {}
 
 const Home = (props) => {
-    const {classes} = props;
     return (
         <div className="Home">
             <Typography variant="display1" component="h1">Most Popular Articles</Typography>

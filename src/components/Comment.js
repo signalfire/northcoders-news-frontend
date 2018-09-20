@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { Card, CardContent, CardActions, Typography, Avatar, Grid, Button } from '@material-ui/core';
+import { Card, CardContent, Typography, Avatar, Grid, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 import moment from 'moment';
@@ -53,7 +53,7 @@ const styles = {
 }
 
 const Comment = (props) => {
-    const {comment, classes, voteOnComment, deleteComment, user} = props;
+    const {comment, classes, deleteComment, user} = props;
     return (
         <Fragment>
             <Card>
@@ -74,6 +74,14 @@ const Comment = (props) => {
                         <Grid item>
                             <Typography component="p" className={classes.meta}><strong>Comment On</strong>{moment(comment.created_at).format('DD/MM/YYYY HH:mm')}</Typography>                                              
                         </Grid>
+                        <Grid item>
+                            <div className={classes.rounded}>
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </Grid>
+                        <Grid item>
+                            <Typography component="p" className={classes.meta}><strong>Votes</strong>{comment.votes}</Typography>                                              
+                        </Grid>
                     </Grid>   
                     <Button variant="outlined" onClick={() => this.voteOnComment('up', comment)} className={classes.voteUp} style={{marginRight:'1rem'}}><i class="fa fa-thumbs-up"></i></Button>
                     <Button variant="outlined" onClick={() => this.voteOnComment('down', comment)} className={classes.voteDown} style={{marginRight:'1rem'}}><i class="fa fa-thumbs-down"></i></Button>
@@ -91,7 +99,7 @@ Comment.propTypes = {
     comment: PropTypes.object.isRequired,
     voteOnComment: PropTypes.func.isRequired,
     deleteComment: PropTypes.func.isRequired,
-    user: PropTypes.object
+    user: PropTypes.any.isRequired
 }
 
 export default withStyles(styles)(Comment);

@@ -188,7 +188,7 @@ class Articles extends Component {
                 })
             )
         })
-        this.closePanel();
+        this.togglePanel();
     }
 
     voteOnArticle = (direction, article) => {
@@ -205,7 +205,7 @@ class Articles extends Component {
 Articles.propTypes = {
     match: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
-    user: PropTypes.object
+    user: PropTypes.any.isRequired
 }
 
 export default withStyles(styles)(Articles);

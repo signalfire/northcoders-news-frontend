@@ -29,8 +29,7 @@ const styles = {
         color:"#000",
         textDecoration:"none"
     },
-    football:{
-    }
+    football:{}
 };
 
 class Topics extends Component {
@@ -38,7 +37,7 @@ class Topics extends Component {
         topics: []
     }
     render() {
-        const {classes, user} = this.props;
+        const {classes} = this.props;
         return (
             <div className={classes.root}>
                 <Typography component="ul" className={classes.list}>

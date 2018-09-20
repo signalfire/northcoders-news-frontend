@@ -4,20 +4,32 @@ import PropTypes from 'prop-types';
 import { Input, Button, Card, CardContent, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
-const styles = {}
+const styles = {
+    error: {
+        marginBottom:'1rem',
+        color:'#721c24',
+        backgroundColor:'#f8d7da',
+        borderColor:'#f5c6cb',
+        padding: '0.5rem',
+        border: '1px solid transparent',
+        borderRadius:'.25rem'        
+    }
+}
 
 class ArticleForm extends Component {
     state = {
         title: '',
-        body: ''
+        body: '',
+        error: ''
     }
     render() {
-        const {classes, user, togglePanel} = this.props;
+        const {togglePanel, classes} = this.props;
         return (
             <Fragment>
                 <Card>
                     <CardContent>            
                         <form onSubmit={this.handleSubmit}>
+                            {this.state.error.length > 0 && <Typography component="p" className={classes.error}>{this.state.error}</Typography>}
                             <Input name="title" placeholder="Enter title for article..." value={this.state.title} onChange={this.handleChange} fullWidth disableUnderline/> 
                             <Input name="body" placeholder="Enter body text for article..." value={this.state.body} onChange={this.handleChange} fullWidth disableUnderline multiline rows={5}/> 
                             <Button variant="outlined" color="primary" style={{marginRight:'1rem'}} onClick={this.addArticle}>Add Article</Button> 
@@ -39,11 +51,15 @@ class ArticleForm extends Component {
         });
     }    
     addArticle = () => {
-        this.props.addArticle(this.state.title, this.state.body);
-        this.setState({
-            title: '',
-            body: ''
-         })
+        if (this.state.title.length === 0 || this.state.body.length === 0){
+            this.setState({error: 'Title and/or body fields were missing'});
+        }else{
+            this.props.addArticle(this.state.title, this.state.body);
+            this.setState({
+                title: '',
+                body: ''
+             })    
+        }
     }
 }
 

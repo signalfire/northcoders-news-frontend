@@ -36,12 +36,12 @@ class Profile extends Component {
     }
     render() {
         const {user, articles} = this.state;
-        const {classes, changeLoggedInUser} = this.props;
+        const {classes, user:currentUser, changeLoggedInUser} = this.props;
         return (
             user && (
                 <Fragment>
                     <Typography component="h1" variant="display1">{user.username}</Typography>
-                    <Button variant="outlined" color="primary" onClick={() => changeLoggedInUser(this.state.user)} style={{marginBottom:'2rem'}}>Login as {user.username}</Button>
+                    {user.username !== currentUser.username && <Button variant="outlined" color="primary" onClick={() => changeLoggedInUser(this.state.user)} style={{marginBottom:'2rem'}}>Login as {user.username}</Button>}
                     {articles.length > 0 && articles.map(article => (
                         <Card key={article._id}>
                             <CardContent>

@@ -12,7 +12,7 @@ const styles = {
     title: {
         flexGrow: 1,
         color:'#fff',
-        fontSize:'2rem'
+        fontSize:'1.5rem'
     },    
     account: {
         color:'#fff'
@@ -33,13 +33,13 @@ class Header extends Component {
     }
 
     render() {
-        const { classes, user, logoutUser } = this.props;
+        const { classes, user, logoutUser, history } = this.props;
         const { el } = this.state;
-        const open = Boolean(el);        
+        const open = Boolean(el);     
         return (
             <AppBar position="static" className={classes.root}>
             <Toolbar>
-                <Typography className={classes.title}><i className="fas fa-eye"></i> readr</Typography>
+                <Typography className={classes.title}><i className="fas fa-eye"></i> Northcoders News</Typography>
                 {user && (
                     <Fragment>
                         <IconButton aria-owns={open ? 'menu-appbar' : null} aria-haspopup="true" onClick={this.handleMenu}>
@@ -53,7 +53,7 @@ class Header extends Component {
                             transformOrigin={{ vertical: 'top', horizontal: 'right'}}
                             open={open}
                             onClose={this.handleClose}>
-                            <MenuItem onClick={this.handleClose}>Profile</MenuItem>
+                            <MenuItem onClick={()=> history.push(`/profile/${user.username}`)}>Profile</MenuItem>
                             <MenuItem onClick={logoutUser}>Logout</MenuItem>
                         </Menu>  
                     </Fragment>             
@@ -67,7 +67,7 @@ class Header extends Component {
 Header.propTypes = {
     classes: PropTypes.object.isRequired,
     logoutUser: PropTypes.func.isRequired,
-    user: PropTypes.object
+    user: PropTypes.any.isRequired
 };
   
 

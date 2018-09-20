@@ -22,24 +22,22 @@ class App extends Component {
   render() {
     return (
       <Fragment>
-        <Header user={this.state.user} logoutUser={this.logoutUser}/>        
-        <Topics user={this.state.user}/>
-        <main className="app">
+        <Route render={(props) => <Header {...props} user={this.state.user} logoutUser={this.logoutUser}/>}/>   
+        <Route render={(props) => <Topics user={this.state.user}/>}/>
+        <div className="app">
           <Switch>
             <Route exact path="/" component={Home}/>
             <Route exact path="/articles" render={({match}) => <Articles match={match} user={this.state.user}/>}/>
             <Route path="/articles/:topic" render={({match}) => <Articles match={match} user={this.state.user}/>}/>
             <Route path="/article/:id" render={({match}) => <Article match={match} user={this.state.user}/>}/>
-            <Route path="/profile/:username" render={({match}) => <Profile match={match} changeLoggedInUser={this.changeLoggedInUser}/>}/> 
+            <Route path="/profile/:username" render={({match}) => <Profile match={match} user={this.state.user} changeLoggedInUser={this.changeLoggedInUser}/>}/> 
             <Route component={NotFound}/>      
           </Switch>        
-        </main>
-      </Fragment>      
+        </div>
+      </Fragment>
     );
   }
-  isUserLoggedIn = () => {
-    return this.state.user;
-  }
+
   changeLoggedInUser = (user) => {
     this.setState({user})
   }

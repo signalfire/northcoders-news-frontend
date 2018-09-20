@@ -1,8 +1,7 @@
 import React, { Component, Fragment } from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import {Typography, Avatar, Card, CardContent, Grid, Button} from '@material-ui/core';
+import {Typography, Card, CardContent, Grid, Button} from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 import Comments from './Comments';
@@ -114,7 +113,7 @@ class Article extends Component {
 Article.propTypes = {
     classes: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
-    user: PropTypes.object
+    user: PropTypes.any.isRequired
 }
 
 export default withStyles(styles)(Article);
