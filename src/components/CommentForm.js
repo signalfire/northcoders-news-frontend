@@ -1,9 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import Typography from '@material-ui/core/Typography';
-import Input from '@material-ui/core/Input';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import {Typography, Input, Button, Card, CardContent} from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 import PropTypes from 'prop-types';
@@ -63,6 +59,7 @@ class CommentForm extends Component {
 }
 
 CommentForm.propTypes = {
+    classes: PropTypes.object.isRequired,
     addComment: PropTypes.func.isRequired
 }
 

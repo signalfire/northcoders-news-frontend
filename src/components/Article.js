@@ -6,6 +6,7 @@ import Avatar from '@material-ui/core/Avatar';
 
 import Comments from './Comments';
 import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 
 import * as api from '../utils/api';
 
@@ -62,6 +63,12 @@ class Article extends Component {
             this.getArticle(article._id);
         })
     }
+}
+
+Article.propTypes = {
+    classes: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
+    user: PropTypes.object
 }
 
 export default withStyles(styles)(Article);

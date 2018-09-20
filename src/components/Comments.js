@@ -34,7 +34,7 @@ class Comments extends Component {
                 {comments && 
                     comments.map(comment => {
                         return (
-                            <Comment key={comment._id} comment={comment} voteOnComment={this.voteOnComment}/>
+                            <Comment key={comment._id} user={user} comment={comment} voteOnComment={this.voteOnComment} deleteComment={this.deleteComment}/>
                         )
                 })}            
             </Fragment>
@@ -51,7 +51,7 @@ class Comments extends Component {
             const {comments} = response.data;
             comments.sort((a, b) => { 
                 return moment(b.created_at).format('X') - moment(a.created_at).format('X');
-            })
+            });
             this.setState({comments});
         });
     }
@@ -72,11 +72,24 @@ class Comments extends Component {
         api.updateCommentVote(comment._id, direction).then(response => {
             this.getComments(comment.belongs_to);
         });
-    }    
+    } 
+    
+    deleteComment = (comment) => {
+        api.deleteArticleComment(comment._id).then(response => {
+            const {comment:deleted} = response.data;
+            this.setState(
+                produce(draft => {
+                    draft.comments = draft.comments.filter(comment => comment._id !== deleted._id)
+                })
+            )
+        })
+    }
 }
 
 Comments.propTypes = {
+    classes: PropTypes.object.isRequired,
     article: PropTypes.object.isRequired,
+    user: PropTypes.object
 }
 
 export default withStyles(styles)(Comments);

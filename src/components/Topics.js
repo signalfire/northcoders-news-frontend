@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 
 import * as api from '../utils/api';
 
@@ -55,6 +56,10 @@ class Topics extends Component {
             this.setState({topics});
         });
     }
+}
+
+Topics.propTypes = {
+    classes: PropTypes.object.isRequired
 }
 
 export default withStyles(styles)(Topics);

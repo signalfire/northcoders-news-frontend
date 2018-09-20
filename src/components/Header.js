@@ -72,6 +72,7 @@ class Header extends Component {
 
 Header.propTypes = {
     classes: PropTypes.object.isRequired,
+    user: PropTypes.object
 };
   
 

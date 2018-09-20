@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
 
 import * as api from '../utils/api';
+
+const styles = {}
 
 class Profile extends Component {
     state = {
@@ -8,6 +12,7 @@ class Profile extends Component {
     }
     render() {
         const {user} = this.state;
+        const {classes} = this.props;
         return (
             <div>
                 {user && <p>{user.username}</p>}
@@ -26,4 +31,10 @@ class Profile extends Component {
     }
 }
 
-export default Profile;
+Profile.propTypes = {
+    classes: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired
+};
+  
+
+export default withStyles(styles)(Profile);
