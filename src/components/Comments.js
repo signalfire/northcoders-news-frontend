@@ -90,7 +90,7 @@ class Comments extends Component {
 Comments.propTypes = {
     classes: PropTypes.object.isRequired,
     article: PropTypes.object.isRequired,
-    user: PropTypes.object
+    user: PropTypes.any.isRequired
 }
 
 export default withStyles(styles)(Comments);

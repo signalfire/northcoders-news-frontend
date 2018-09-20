@@ -2,7 +2,6 @@ import React, { Component, Fragment} from 'react';
 import {Route, Switch} from 'react-router-dom';
 
 import Header from './components/Header';
-import Home from './components/Home';
 import Profile from './components/Profile';
 import Articles from './components/Articles'
 import Article from './components/Article';
