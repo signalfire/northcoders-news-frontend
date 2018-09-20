@@ -10,6 +10,7 @@ import produce from 'immer';
 
 import ArticleForm from './ArticleForm';
 import * as api from '../utils/api';
+import { truncateString } from '../utils/common';
 
 const styles = {
     title: {
@@ -45,7 +46,7 @@ class Articles extends Component {
                                     <Typography component="h2" className={classes.cardTitle}>
                                         <Link to={`/article/${article._id}`}>{article.title.toLowerCase()}</Link>
                                     </Typography>  
-                                    <Typography component="p">{article.body}</Typography>     
+                                    <Typography component="p">{truncateString(article.body, 200)}</Typography>     
                                     <Link to={`/profile/${article.created_by.username}`}>
                                         <Avatar alt={article.created_by.name} src={`http://i.pravatar.cc/100?q=${article.created_by.username}`} className={classes.bigAvatar} />                        
                                     </Link>                                                   
