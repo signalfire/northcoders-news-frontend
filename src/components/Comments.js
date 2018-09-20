@@ -21,7 +21,7 @@ class Comments extends Component {
 
     render() {
         const {comments} = this.state;
-        const {user, classes} = this.props;
+        const {user} = this.props;
         return (
             <Fragment>
                 {user && <CommentForm addComment={this.addComment}/>}

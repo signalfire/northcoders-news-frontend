@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 
 import { AppBar, Toolbar, Typography, IconButton, Menu, MenuItem } from '@material-ui/core';
@@ -33,26 +33,31 @@ class Header extends Component {
     }
 
     render() {
-        const { classes, user } = this.props;
+        const { classes, user, logoutUser } = this.props;
         const { el } = this.state;
         const open = Boolean(el);        
         return (
             <AppBar position="static" className={classes.root}>
             <Toolbar>
                 <Typography className={classes.title}><i className="fas fa-eye"></i> readr</Typography>
-                <IconButton aria-owns={open ? 'menu-appbar' : null} aria-haspopup="true" onClick={this.handleMenu}>
-                    <AccountCircle className={classes.account}/>
-                </IconButton>
-                <Typography className={classes.account}>{user.name}</Typography>
-                <Menu 
-                    id="menu-appbar"
-                    anchorEl={el}
-                    anchorOrigin={{ vertical: 'top', horizontal: 'right'}}
-                    transformOrigin={{ vertical: 'top', horizontal: 'right'}}
-                    open={open}
-                    onClose={this.handleClose}>
-                    <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                </Menu>                
+                {user && (
+                    <Fragment>
+                        <IconButton aria-owns={open ? 'menu-appbar' : null} aria-haspopup="true" onClick={this.handleMenu}>
+                            <AccountCircle className={classes.account}/>
+                        </IconButton>
+                        <Typography className={classes.account}>{user.name}</Typography>
+                        <Menu 
+                            id="menu-appbar"
+                            anchorEl={el}
+                            anchorOrigin={{ vertical: 'top', horizontal: 'right'}}
+                            transformOrigin={{ vertical: 'top', horizontal: 'right'}}
+                            open={open}
+                            onClose={this.handleClose}>
+                            <MenuItem onClick={this.handleClose}>Profile</MenuItem>
+                            <MenuItem onClick={logoutUser}>Logout</MenuItem>
+                        </Menu>  
+                    </Fragment>             
+                )}
             </Toolbar>
         </AppBar>
         );
@@ -61,6 +66,7 @@ class Header extends Component {
 
 Header.propTypes = {
     classes: PropTypes.object.isRequired,
+    logoutUser: PropTypes.func.isRequired,
     user: PropTypes.object
 };
   

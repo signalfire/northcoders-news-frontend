@@ -68,13 +68,13 @@ class Article extends Component {
                                 <Grid item xs={12} sm={1}>
                                     <Grid container direction="column" justify="center" alignItems="center">
                                         <Grid>
-                                            <Button variant="outlined" fullWidth onClick={() => this.voteOnArticle('up', article)} className={classes.voteUp}><i class="fa fa-thumbs-up"></i></Button>
+                                            <Button variant="outlined" fullWidth onClick={() => this.voteOnArticle('up', article)} className={classes.voteUp}><i className="fa fa-thumbs-up"></i></Button>
                                         </Grid>
                                         <Grid>
                                             <Typography container="p" className={classes.votes}>{article.votes} Votes</Typography>
                                         </Grid> 
                                         <Grid>
-                                            <Button variant="outlined" fullWidth onClick={() => this.voteOnArticle('down', article)} className={classes.voteDown}><i class="fa fa-thumbs-down"></i></Button>
+                                            <Button variant="outlined" fullWidth onClick={() => this.voteOnArticle('down', article)} className={classes.voteDown}><i className="fa fa-thumbs-down"></i></Button>
                                         </Grid>                                           
                                     </Grid>
                                 </Grid>

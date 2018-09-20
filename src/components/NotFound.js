@@ -7,7 +7,6 @@ import { withStyles } from '@material-ui/core/styles';
 const styles = {}
 
 const NotFound = (props) => {
-    const {classes} = props;
     return (
         <Fragment>
             <Typography component="h1" variant="display1">Sorry...</Typography>
