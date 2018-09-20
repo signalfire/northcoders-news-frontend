@@ -36,6 +36,14 @@ export default createMuiTheme({
                 borderRadius:'4px',
                 marginBottom:'1rem',
             }
+        },
+        MuiAvatar: {
+            root:{
+                borderRadius:'4px',
+                width:'36px',
+                height:'36px',
+                border:'solid 2px #666'
+            }
         }
     }
 });
