@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -27,19 +27,17 @@ class Article extends Component {
         const {user, classes} = this.props;
         return (
             article && (
-                <div>
-                    <div className="full-article">
-                        <Typography variant="display1" className={classes.title} component="h1">{article.title.toLowerCase()}</Typography>
-                        <button onClick={() => this.voteOnArticle('up', article)}>Up</button>
-                        <button onClick={() => this.voteOnArticle('down', article)}>Down</button>
-                        <Typography component="p">Votes: {article.votes}</Typography>
-                        <Typography component="p">{article.body}</Typography>
-                        <Link to={`/profile/${article.created_by.username}`}>
-                            <Avatar alt={article.created_by.name} src={`http://i.pravatar.cc/100?q=${article.created_by.username}`} className={classes.bigAvatar} />                        
-                        </Link>
-                    </div>
+                <Fragment>
+                    <Typography variant="display1" className={classes.title} component="h1">{article.title.toLowerCase()}</Typography>
+                    <button onClick={() => this.voteOnArticle('up', article)}>Up</button>
+                    <button onClick={() => this.voteOnArticle('down', article)}>Down</button>
+                    <Typography component="p">Votes: {article.votes}</Typography>
+                    <Typography component="p">{article.body}</Typography>
+                    <Link to={`/profile/${article.created_by.username}`}>
+                        <Avatar alt={article.created_by.name} src={`http://i.pravatar.cc/100?q=${article.created_by.username}`} className={classes.bigAvatar} />                        
+                    </Link>
                     {this.state.article && <Comments article={article} user={user}/>}
-                </div>
+                </Fragment>
             )
         );
     }
