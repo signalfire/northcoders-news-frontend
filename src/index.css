@@ -1,17 +1,18 @@
 body {
   margin: 0;
   padding: 0;
+  background-color:whitesmoke;
 }
 .app{
   padding:1.5rem;
 }
-.comment-form, 
+/*.comment-form, 
 .full-article{
   margin-bottom:2rem;
 }
 
 .topics-bar{
-  background-color:whitesmoke;
+  background-color:#aaa;
   padding-top:1rem;
   padding-bottom:1rem;
   padding-left:1.5rem;
@@ -45,4 +46,4 @@ body {
   content:"\f094";
   margin-right:0.5rem;
 
-}
+}*/

@@ -4,16 +4,7 @@ import PropTypes from 'prop-types';
 import { Input, Button, Card, CardContent, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
-const styles = {
-    title: {
-        marginBottom:"2rem"
-    },
-    input: {
-        border:'solid 1px #ccc',
-        borderRadius:'4px',
-        marginBottom:'1rem'
-    }    
-}
+const styles = {}
 
 class ArticleForm extends Component {
     state = {
@@ -24,13 +15,13 @@ class ArticleForm extends Component {
         const {classes, user} = this.props;
         return (
             <Fragment>
-                <Typography component="h1" variant="display1" className={classes.title} >Add Article</Typography>
+                <Typography component="h1" variant="display1">Add Article</Typography>
                 <Card>
                     <CardContent>            
                         <form onSubmit={this.handleSubmit}>
-                            <Input name="title" placeholder="Enter title for article..." value={this.state.title} onChange={this.handleChange} fullWidth disableUnderline className={classes.input}/> 
-                            <Input name="body" placeholder="Enter body text for article..." value={this.state.body} onChange={this.handleChange} fullWidth disableUnderline multiline rows={5}  className={classes.input}/> 
-                            <Button variant="contained" color="primary" onClick={this.addArticle}>Add Article</Button> 
+                            <Input name="title" placeholder="Enter title for article..." value={this.state.title} onChange={this.handleChange} fullWidth disableUnderline/> 
+                            <Input name="body" placeholder="Enter body text for article..." value={this.state.body} onChange={this.handleChange} fullWidth disableUnderline multiline rows={5}/> 
+                            <Button variant="contained" color="primary" fullWidth onClick={this.addArticle}>Add Article</Button> 
                         </form>
                     </CardContent>
                 </Card>

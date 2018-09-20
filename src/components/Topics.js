@@ -9,7 +9,7 @@ import * as api from '../utils/api';
 
 const styles = {
     root: {
-        backgroundColor:"#f5f5f5",
+        background: "linear-gradient(to bottom, #f5f5f5, #e4e3e3)",
         paddingTop:"1rem",
         paddingBottom:"1rem",
         paddingLeft:"1.5rem",

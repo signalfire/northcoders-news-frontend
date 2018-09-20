@@ -13,15 +13,16 @@ import * as api from '../utils/api';
 import { truncateString } from '../utils/common';
 
 const styles = {
-    title: {
-        textTransform:'capitalize',
-        marginBottom:'2rem'
+    title:{
+        marginBottom:'1rem',
+        '&>a':{
+            color:'#ff8b00',
+            textDecoration:'none'
+        }
     },
-    card:{
-        marginBottom:'2rem'
-    },
-    cardTitle:{
-        textTransform:'capitalize'
+    link:{
+        color:'#ff8b00',
+        backgroundColor:'#ff8b00'
     }
 }
 
@@ -35,19 +36,17 @@ class Articles extends Component {
         return (
             <Grid container spacing={24}>
                 <Grid item xs={12} sm={9}>
-                    <Typography variant="display1" component="h1" className={classes.title}>
-                        {topic ? topic : 'Latest'} Articles
-                    </Typography>
+                    <Typography variant="display1" component="h1">{topic ? topic : 'Latest'} Articles</Typography>
                     {this.state.articles.length === 0 && <Typography component="p">Sorry, no articles found for {topic}</Typography>}
                     {this.state.articles.map(article => {
                         return (
-                            <Card key={article._id} className={classes.card}>
+                            <Card key={article._id}>
                                 <CardContent>   
-                                    <Typography component="h2" className={classes.cardTitle}>
+                                    <Typography component="h2" variant="display2" className={classes.title}>
                                         <Link to={`/article/${article._id}`}>{article.title.toLowerCase()}</Link>
                                     </Typography>  
                                     <Typography component="p">{truncateString(article.body, 200)}</Typography>     
-                                    <Link to={`/profile/${article.created_by.username}`}>
+                                    <Link to={`/profile/${article.created_by.username}`} className={classes.link}>
                                         <Avatar alt={article.created_by.name} src={`http://i.pravatar.cc/100?q=${article.created_by.username}`} className={classes.bigAvatar} />                        
                                     </Link>                                                   
                                     <Typography component="p">{moment(article.created_at).format('DD/MM/YY HH:mm')}</Typography>

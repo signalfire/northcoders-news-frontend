@@ -12,12 +12,7 @@ import CommentForm from './CommentForm';
 
 import * as api from '../utils/api';
 
-const styles = {
-    title:{
-        marginBottom:'2rem',
-        fontSize:'1.5rem'
-    }
-}
+const styles = {}
 
 class Comments extends Component {
     state = {
@@ -30,7 +25,7 @@ class Comments extends Component {
         return (
             <Fragment>
                 {user && <CommentForm addComment={this.addComment}/>}
-                {comments && <Typography component="h1" className={classes.title}>Previous Comments</Typography>}
+                {comments && <Typography component="h2" variant="display2">Previous Comments</Typography>}
                 {comments && 
                     comments.map(comment => {
                         return (

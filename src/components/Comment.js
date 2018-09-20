@@ -5,7 +5,6 @@ import { Card, CardContent, CardActions, Typography, Avatar } from '@material-ui
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = {
-    root:{},
     card:{
         marginBottom:'2rem'
     }

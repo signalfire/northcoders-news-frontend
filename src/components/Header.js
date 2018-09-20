@@ -50,8 +50,7 @@ class Header extends Component {
                     anchorOrigin={{ vertical: 'top', horizontal: 'right'}}
                     transformOrigin={{ vertical: 'top', horizontal: 'right'}}
                     open={open}
-                    onClose={this.handleClose}
-                >
+                    onClose={this.handleClose}>
                     <MenuItem onClick={this.handleClose}>Profile</MenuItem>
                 </Menu>                
             </Toolbar>

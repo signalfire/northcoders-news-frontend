@@ -8,10 +8,6 @@ const styles = {
     card:{
         marginBottom:'2rem'
     },
-    title:{
-        marginBottom:'2rem',
-        fontSize:'1.5rem'
-    },
     body:{
         border:'solid 1px #ccc',
         borderRadius:'4px',
@@ -27,7 +23,7 @@ class CommentForm extends Component {
         const {classes} = this.props;
         return (
             <Fragment>
-                <Typography component="h1" className={classes.title}>Leave a new comment</Typography>
+                <Typography component="h1" variant="display2">Leave a new comment</Typography>
                 <Card className={classes.card}>
                     <CardContent>            
                         <form onSubmit={this.handleSubmit} noValidate autoComplete="off">
