@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-import { AppBar, Toolbar, Typography, IconButton, AccountCircle, Menu, MenuItem } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, IconButton, Menu, MenuItem } from '@material-ui/core';
+import { AccountCircle } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = {
@@ -20,21 +21,21 @@ const styles = {
 
 class Header extends Component {
     state = {
-        anchorEl: null,
+        el: null,
     }
 
     handleMenu = event => {
-        this.setState({ anchorEl: event.currentTarget });
+        this.setState({ el: event.currentTarget });
     }
 
     handleClose = () => {
-        this.setState({ anchorEl: null });
+        this.setState({ el: null });
     }
 
     render() {
         const { classes, user } = this.props;
-        const { anchorEl } = this.state;
-        const open = Boolean(anchorEl);        
+        const { el } = this.state;
+        const open = Boolean(el);        
         return (
             <AppBar position="static" className={classes.root}>
             <Toolbar>
@@ -43,17 +44,11 @@ class Header extends Component {
                     <AccountCircle className={classes.account}/>
                 </IconButton>
                 <Typography className={classes.account}>{user.name}</Typography>
-                <Menu
+                <Menu 
                     id="menu-appbar"
-                    anchorEl={anchorEl}
-                    anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                    }}
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                    }}
+                    anchorEl={el}
+                    anchorOrigin={{ vertical: 'top', horizontal: 'right'}}
+                    transformOrigin={{ vertical: 'top', horizontal: 'right'}}
                     open={open}
                     onClose={this.handleClose}
                 >
