@@ -1,5 +1,5 @@
 import React, { Component, Fragment} from 'react';
-import {Route} from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 
 import Header from './components/Header';
@@ -8,6 +8,7 @@ import Profile from './components/Profile';
 import Articles from './components/Articles'
 import Article from './components/Article';
 import Topics from './components/Topics';
+import NotFound from './components/NotFound';
 
 class App extends Component {
   state = {
@@ -27,11 +28,14 @@ class App extends Component {
         <main className="app">
           <Grid container spacing={24}>
             <Grid item xs={12} sm={9}>
-              <Route exact path="/" component={Home}/>
-              <Route exact path="/articles" render={({match}) => <Articles match={match}/>}/>
-              <Route path="/articles/:topic" render={({match}) => <Articles match={match}/>}/>
-              <Route path="/article/:id" render={({match}) => <Article match={match} user={this.state.user}/>}/>
-              <Route path="/profile/:username" render={({match}) => <Profile match={match}/>}/>            
+              <Switch>
+                <Route exact path="/" component={Home}/>
+                <Route exact path="/articles" render={({match}) => <Articles match={match} user={this.state.user}/>}/>
+                <Route path="/articles/:topic" render={({match}) => <Articles match={match} user={this.state.user}/>}/>
+                <Route path="/article/:id" render={({match}) => <Article match={match} user={this.state.user}/>}/>
+                <Route path="/profile/:username" render={({match}) => <Profile match={match} user={this.state.user}/>}/>  
+                <Route component={NotFound}/>      
+              </Switch>
             </Grid>
             <Grid item xs={12} sm={3}>One Third</Grid>
           </Grid>        

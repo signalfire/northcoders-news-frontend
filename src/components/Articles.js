@@ -29,12 +29,13 @@ class Articles extends Component {
     }
     render() {
         const {topic} = this.props.match.params;
-        const {classes} = this.props;
+        const {classes, user} = this.props;
         return (
             <Fragment>
                 <Typography variant="display1" component="h1" className={classes.title}>
                     {topic ? topic : 'Latest'} Articles
                 </Typography>
+                {this.state.articles.length === 0 && <Typography component="p">Sorry, no articles found for {topic}</Typography>}
                 {this.state.articles.map(article => {
                     return (
                         <Card key={article._id} className={classes.card}>

@@ -62,7 +62,7 @@ class Comments extends Component {
             const {comment} = response.data;
             this.setState(
                 produce(draft => {
-                    draft.comments.push(comment);
+                    draft.comments.unshift(comment);
                 })
             )
         })
