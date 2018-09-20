@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
-import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+
+import { Typography } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 
 import * as api from '../utils/api';
 
