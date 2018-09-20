@@ -25,7 +25,6 @@ class CommentForm extends Component {
         const {classes} = this.props;
         return (
             <Fragment>
-                <Typography component="h1" variant="display2">Leave a new comment</Typography>
                 <Card className={classes.card}>
                     <CardContent>            
                         <form onSubmit={this.handleSubmit} noValidate autoComplete="off">

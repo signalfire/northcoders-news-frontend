@@ -13,28 +13,36 @@ const styles = {
         '&:hover': {
             background: 'linear-gradient(to right, #56ab2f, #a8e063)',
             color:'#fff'
-        }
+        },
+        '&:disabled': {
+            background: 'linear-gradient(to right, #56ab2f, #a8e063)',
+            color:'#fff'
+        }        
     },
     voteDown:{
         '&:hover': {
             background: 'linear-gradient(to right, #f00000, #dc281e)',
             color:'#fff'
-        }
+        },
+        '&:disabled': {
+            background: 'linear-gradient(to right, #f00000, #dc281e)',
+            color:'#fff'
+        },        
     }    
 }
 
 const ArticleVote = (props) => {
-    const {classes, article, voteOnContent} = props;
+    const {classes, article, voteOnContent, voteArticleId, direction} = props;
     return (
         <Grid container direction="column" justify="center" alignItems="center">
             <Grid>
-                <Button variant="outlined" fullWidth onClick={() => voteOnContent('up', article)} className={classes.voteUp}><i className="fa fa-thumbs-up"></i></Button>
+                <Button variant="outlined" disabled={voteArticleId === article._id && direction === 'up'} fullWidth onClick={() => voteOnContent('up', article)} className={classes.voteUp}><i className={voteArticleId === article._id && direction === 'up' ? 'fas fa-circle-notch fa-spin' : 'fas fa-thumbs-up'}></i></Button>
             </Grid>
             <Grid>
-                <Typography container="p" className={classes.votes}>{article.votes} Votes</Typography>
+                <Typography container="p"  className={classes.votes}>{article.votes} Votes</Typography>
             </Grid> 
             <Grid>
-                <Button variant="outlined" fullWidth onClick={() => voteOnContent('down', article)} className={classes.voteDown}><i className="fa fa-thumbs-down"></i></Button>
+                <Button variant="outlined" disabled={voteArticleId === article._id && direction === 'down'} fullWidth onClick={() => voteOnContent('down', article)} className={classes.voteDown}><i className={voteArticleId === article._id && direction === 'down' ? 'fas fa-circle-notch fa-spin' : 'fas fa-thumbs-down'}></i></Button>
             </Grid>                                           
         </Grid>
     );
@@ -43,7 +51,9 @@ const ArticleVote = (props) => {
 ArticleVote.propTypes = {
     classes: PropTypes.object.isRequired,
     article: PropTypes.object.isRequired,
-    voteOnContent: PropTypes.func.isRequired
+    voteOnContent: PropTypes.func.isRequired,
+    voteArticleId: PropTypes.string.isRequired,
+    direction: PropTypes.string.isRequired
 }
 
 export default withStyles(styles)(ArticleVote);

@@ -1,10 +1,15 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
-import {Typography, Card, CardContent, Grid, Button} from '@material-ui/core';
+import {Typography, Card, CardContent, Grid} from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
+import produce from 'immer';
+
 import Comments from './Comments';
+import ArticleVote from './ArticleVote';
+import ArticleMeta from './ArticleMeta';
+
 import * as api from '../utils/api';
 
 const styles = {
@@ -32,57 +37,37 @@ const styles = {
             color:'rgba(0, 0, 0, 0.23)',
             fontSize:'1.6rem'
         }
-    },
-    votes: {
-        paddingTop:'0.25rem',
-        paddingBottom:'0.25rem'
-    },
-    voteUp:{
-        '&:hover': {
-            background: 'linear-gradient(to right, #56ab2f, #a8e063)',
-            color:'#fff'
-        }
-    },
-    voteDown:{
-        '&:hover': {
-            background: 'linear-gradient(to right, #f00000, #dc281e)',
-            color:'#fff'
-        }
     }
 }
 
 class Article extends Component {
     state = {
-        article: false
+        article: false,
+        voteArticleId: '',
+        direction: ''
     }
     render() {
-        const {article} = this.state;
+        const {article, voteArticleId, direction} = this.state;
         const {user, classes} = this.props;
         return (
             article && (
                 <Fragment>
-                    <Card>
+                    <Card style={{marginBottom:'0.15rem'}}>
                         <CardContent>
                             <Grid container spacing={24}>
                                 <Grid item xs={12} sm={1}>
-                                    <Grid container direction="column" justify="center" alignItems="center">
-                                        <Grid>
-                                            <Button variant="outlined" fullWidth onClick={() => this.voteOnArticle('up', article)} className={classes.voteUp}><i className="fa fa-thumbs-up"></i></Button>
-                                        </Grid>
-                                        <Grid>
-                                            <Typography container="p" className={classes.votes}>{article.votes} Votes</Typography>
-                                        </Grid> 
-                                        <Grid>
-                                            <Button variant="outlined" fullWidth onClick={() => this.voteOnArticle('down', article)} className={classes.voteDown}><i className="fa fa-thumbs-down"></i></Button>
-                                        </Grid>                                           
-                                    </Grid>
+                                    <ArticleVote article={article} voteOnContent={this.voteOnArticle} voteArticleId={voteArticleId} direction={direction}/>
                                 </Grid>
                                 <Grid item xs={12} sm={11}>
-                                    <Typography component="p" className={classes.topic}><strong>Topic</strong> {article.belongs_to}</Typography>                                             
                                     <Typography variant="display1" component="h1" className={classes.title}>{article.title.toLowerCase()}</Typography>
-                                    <Typography component="p">{article.body}</Typography>                                
+                                    <Typography component="p">{article.body}</Typography>       
                                 </Grid>
                             </Grid>                            
+                        </CardContent>                       
+                    </Card>
+                    <Card>
+                        <CardContent>
+                            <ArticleMeta article={article}/>                           
                         </CardContent>
                     </Card>
                     {this.state.article && <Comments article={article} user={user}/>}                                    
@@ -104,8 +89,16 @@ class Article extends Component {
     }
 
     voteOnArticle = (direction, article) => {
+        this.setState({voteArticleId:article._id, direction});
         api.updateArticleVote(article._id, direction).then(response => {
-            this.getArticle(article._id);
+            const {article} = response.data;
+            this.setState(
+                produce(draft => {
+                    draft.article = article;
+                    draft.voteArticleId = false;
+                    draft.direction = '';                    
+                })
+            )
         })
     }
 }

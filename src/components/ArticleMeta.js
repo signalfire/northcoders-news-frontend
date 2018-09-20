@@ -8,9 +8,6 @@ import { withStyles } from '@material-ui/core/styles';
 import moment from 'moment';
 
 const styles = {
-    root:{
-        marginBottom:"0.5rem"
-    },    
     rounded: {
         borderRadius:'4px',
         width:'38px',
@@ -30,7 +27,7 @@ const styles = {
         }
     },
     link: {
-        color:'#ff8b00',
+        color:'#BA1F31',
         textDecoration:'none'        
     }    
 }

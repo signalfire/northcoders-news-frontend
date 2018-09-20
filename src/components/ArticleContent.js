@@ -13,7 +13,7 @@ const styles = {
             color:'rgba(0, 0, 0, 0.54)',
             textDecoration:'none',
             '&:hover': {
-                color:'#ff8b00'
+                color:'#BA1F31'
             }
         }
     },
