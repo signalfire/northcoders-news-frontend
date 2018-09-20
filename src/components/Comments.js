@@ -26,8 +26,8 @@ class Comments extends Component {
             <Fragment>
                 {user && <CommentForm addComment={this.addComment}/>}
                 {comments && <Typography component="h2" variant="display2">Previous Comments</Typography>}
-                {comments && 
-                    comments.map(comment => {
+                {comments.length === 0 && <Typography component="p">There are no comments at the moment...</Typography>}
+                {comments.map(comment => {
                         return (
                             <Comment key={comment._id} user={user} comment={comment} voteOnComment={this.voteOnComment} deleteComment={this.deleteComment}/>
                         )

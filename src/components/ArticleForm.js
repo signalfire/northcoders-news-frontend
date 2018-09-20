@@ -21,7 +21,7 @@ class ArticleForm extends Component {
                         <form onSubmit={this.handleSubmit}>
                             <Input name="title" placeholder="Enter title for article..." value={this.state.title} onChange={this.handleChange} fullWidth disableUnderline/> 
                             <Input name="body" placeholder="Enter body text for article..." value={this.state.body} onChange={this.handleChange} fullWidth disableUnderline multiline rows={5}/> 
-                            <Button variant="contained" color="primary" fullWidth onClick={this.addArticle}>Add Article</Button> 
+                            <Button variant="outlined" color="primary" fullWidth onClick={this.addArticle}>Add Article</Button> 
                         </form>
                     </CardContent>
                 </Card>

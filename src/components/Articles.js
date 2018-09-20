@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { Card, CardContent, Typography, Avatar, Grid } from '@material-ui/core';
+import { Card, CardContent, Typography, Avatar, Grid, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 import moment from 'moment';
 import produce from 'immer';
+
+import classNames from 'classnames';
 
 import ArticleForm from './ArticleForm';
 import * as api from '../utils/api';
@@ -14,10 +16,13 @@ import { truncateString } from '../utils/common';
 
 const styles = {
     title:{
-        marginBottom:'1rem',
+        marginBottom:'0.5rem',
         '&>a':{
-            color:'#ff8b00',
-            textDecoration:'none'
+            color:'rgba(0, 0, 0, 0.54)',
+            textDecoration:'none',
+            '&:hover': {
+                color:'#ff8b00'
+            }
         }
     },
     topic: {
@@ -39,15 +44,30 @@ const styles = {
     },
     rounded: {
         borderRadius:'4px',
-        backgroundColor:'#666',
-        width:'36px',
-        height:'36px',
-        border:'solid 2px #666',
+        width:'38px',
+        height:'38px',
+        border:'solid 1px rgba(0, 0, 0, 0.23)',
         textAlign: 'center',
         '&>i': {
-            marginTop:'4px',
-            color:'#fff',
+            marginTop:'6px',
+            color:'rgba(0, 0, 0, 0.23)',
             fontSize:'1.6rem'
+        }
+    },
+    votes: {
+        paddingTop:'0.25rem',
+        paddingBottom:'0.25rem'
+    },
+    voteUp:{
+        '&:hover': {
+            background: 'linear-gradient(to right, #56ab2f, #a8e063)',
+            color:'#fff'
+        }
+    },
+    voteDown:{
+        '&:hover': {
+            background: 'linear-gradient(to right, #f00000, #dc281e)',
+            color:'#fff'
         }
     }
 }
@@ -69,7 +89,19 @@ class Articles extends Component {
                             <Card key={article._id}>
                                 <CardContent>   
                                     <Grid container spacing={24}>
-                                        <Grid item xs={12} sm={1}></Grid>
+                                        <Grid item xs={12} sm={1}>
+                                            <Grid container direction="column" justify="center" alignItems="center">
+                                                <Grid>
+                                                    <Button variant="outlined" fullWidth onClick={() => this.voteOnArticle('up', article)} className={classes.voteUp}><i class="fa fa-thumbs-up"></i></Button>
+                                                </Grid>
+                                                <Grid>
+                                                    <Typography container="p" className={classes.votes}>{article.votes} Votes</Typography>
+                                                </Grid> 
+                                                <Grid>
+                                                    <Button variant="outlined" fullWidth onClick={() => this.voteOnArticle('down', article)} className={classes.voteDown}><i class="fa fa-thumbs-down"></i></Button>
+                                                </Grid>                                           
+                                            </Grid>
+                                        </Grid>
                                         <Grid item xs={12} sm={11}>
                                             <Typography component="p" className={classes.topic}><strong>Topic</strong> {article.belongs_to}</Typography>                                             
                                             <Typography component="h2" variant="display2" className={classes.title}>
@@ -157,6 +189,12 @@ class Articles extends Component {
             )
         })
     }
+
+    voteOnArticle = (direction, article) => {
+        api.updateArticleVote(article._id, direction).then(response => {
+            this.getArticles();
+        })
+    }    
 }
 
 Articles.propTypes = {

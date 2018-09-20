@@ -27,22 +27,26 @@ export default createMuiTheme({
     overrides: {
         MuiCard: {
             root: {
-                marginBottom:"2rem"
+                marginBottom:'2rem',
+                paddingTop:'8px'
             }
         },
         MuiInput: {
             root: {
-                border:"solid 1px #ccc",
+                border:"solid 1px rgba(0, 0, 0, 0.23)",
                 borderRadius:'4px',
-                marginBottom:'1rem',
+                marginBottom:'1rem'
+            },
+            input: {
+                paddingLeft:'0.5rem'
             }
         },
         MuiAvatar: {
             root:{
                 borderRadius:'4px',
-                width:'36px',
-                height:'36px',
-                border:'solid 2px #666'
+                width:'38px',
+                height:'38px',
+                border:'solid 1px rgba(0, 0, 0, 0.23)'
             }
         }
     }

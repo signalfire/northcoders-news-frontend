@@ -4,16 +4,7 @@ import PropTypes from 'prop-types';
 import { Typography, Input, Button, Card, CardContent } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
-const styles = {
-    card:{
-        marginBottom:'2rem'
-    },
-    body:{
-        border:'solid 1px #ccc',
-        borderRadius:'4px',
-        marginBottom:'1rem'
-    }
-}
+const styles = {}
 
 class CommentForm extends Component {
     state = {
@@ -28,7 +19,7 @@ class CommentForm extends Component {
                     <CardContent>            
                         <form onSubmit={this.handleSubmit} noValidate autoComplete="off">
                             <Input name="body" value={this.state.body} onChange={this.handleChange} fullWidth disableUnderline multiline rows={5} className={classes.body}/> 
-                            <Button variant="contained" color="primary" onClick={this.addComment}>Add Comment</Button> 
+                            <Button variant="outlined" color="primary" onClick={this.addComment}>Add Comment</Button> 
                         </form>
                     </CardContent>
                 </Card>
