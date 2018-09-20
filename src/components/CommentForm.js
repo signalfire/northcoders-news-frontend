@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
+
 import {Typography, Input, Button, Card, CardContent} from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-
-import PropTypes from 'prop-types';
 
 const styles = {
     card:{
