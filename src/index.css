@@ -4,46 +4,5 @@ body {
   background-color:whitesmoke;
 }
 .app{
-  padding:1.5rem;
+  padding:2rem;
 }
-/*.comment-form, 
-.full-article{
-  margin-bottom:2rem;
-}
-
-.topics-bar{
-  background-color:#aaa;
-  padding-top:1rem;
-  padding-bottom:1rem;
-  padding-left:1.5rem;
-  padding-right:1.5rem;
-}
-.topics-bar ul{
-  list-style-type:none;
-  margin:0;
-  padding:0;
-}
-.topics-bar li{
-  margin-right:1rem;
-  display:inline-block;
-  font-size:1.2rem;
-}
-.topics-bar li:last-child{
-  margin-right:0;
-}
-.topics-bar li.football:before{
-  font-family:"fontawesome";
-  content:"\f1e3";
-  margin-right:0.5rem;
-}
-.topics-bar li.coding:before{
-  font-family:"fontawesome";
-  content:"\f121";
-  margin-right:0.5rem;
-}
-.topics-bar li.cooking:before{
-  font-family:"fontawesome";
-  content:"\f094";
-  margin-right:0.5rem;
-
-}*/

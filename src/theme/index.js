@@ -15,7 +15,7 @@ export default createMuiTheme({
         },
         display2: {
             fontSize:"1.2rem",
-            marginBottom:"2rem",
+            marginBottom:"0",
             textTransform:"capitalize"
         }
     },

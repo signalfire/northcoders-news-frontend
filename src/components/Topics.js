@@ -12,8 +12,8 @@ const styles = {
         background: "linear-gradient(to bottom, #f5f5f5, #e4e3e3)",
         paddingTop:"1rem",
         paddingBottom:"1rem",
-        paddingLeft:"1.5rem",
-        paddingRight:"1.5rem"
+        paddingLeft:"2rem",
+        paddingRight:"2rem"
     },
     list:{
         listStyleType:"none",
@@ -42,7 +42,7 @@ class Topics extends Component {
             <div className={classes.root}>
                 <Typography component="ul" className={classes.list}>
                     <Typography component="li" className={classes.item}>Topics</Typography>
-                    <Typography component="li" className={classes.item}><Link to="/articles" className={classes.link}>All Articles</Link></Typography>
+                    <Typography component="li" className={classes.item}><Link to="/" className={classes.link}>All Articles</Link></Typography>
                     {this.state.topics.map(topic => {
                         return(<Typography key={topic._id} component="li" className={classes.item}><Link to={`/articles/${topic.slug}`} className={classes.link}>{topic.title}</Link></Typography>)
                     })}
