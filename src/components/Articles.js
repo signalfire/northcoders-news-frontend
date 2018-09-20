@@ -8,8 +8,6 @@ import { withStyles } from '@material-ui/core/styles';
 import moment from 'moment';
 import produce from 'immer';
 
-import classNames from 'classnames';
-
 import ArticleForm from './ArticleForm';
 import * as api from '../utils/api';
 import { truncateString } from '../utils/common';
@@ -75,7 +73,7 @@ const styles = {
 class Articles extends Component {
     state = {
         articles: [],
-        panelOpen: false,
+        panelOpen: false
     }
     render() {
         const {topic} = this.props.match.params;
@@ -162,7 +160,9 @@ class Articles extends Component {
                 articles.sort((a, b) => { 
                     return moment(b.created_at).format('X') - moment(a.created_at).format('X');
                 });                
-                this.setState({articles})
+                this.setState({
+                    articles
+                })
             });    
         }else{
             api.getAllArticles().then(response => {
@@ -170,7 +170,9 @@ class Articles extends Component {
                 articles.sort((a, b) => { 
                     return moment(b.created_at).format('X') - moment(a.created_at).format('X');
                 });                          
-                this.setState({articles})
+                this.setState({
+                    articles
+                })
             });        
         }
     }   
