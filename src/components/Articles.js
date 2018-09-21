@@ -1,16 +1,16 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
-import { Card, CardContent, Typography, Grid } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 import moment from 'moment';
 import produce from 'immer';
 
 import ArticleForm from './ArticleForm';
-import ArticleVote from './ArticleVote';
-import ArticleMeta from './ArticleMeta';
 import ArticleContent from './ArticleContent';
+import ArticleTeaserContent from './ArticleTeaserContent';
+import ErrorRedirect from './ErrorRedirect';
 
 import * as api from '../utils/api';
 import LoadingDialog from './LoadingDialog';
@@ -24,13 +24,15 @@ class Articles extends Component {
         voteArticleId: '',
         direction: '',
         isLoading:false,
+        error: false
     }
     render() {
         const {topic} = this.props.match.params;
-        const {user} = this.props;
-        const {panelOpen, voteArticleId, direction, isLoading} = this.state;
+        const {user, classes} = this.props;
+        const {panelOpen, voteArticleId, direction, isLoading, error} = this.state;
         return (
             <Fragment>
+                <ErrorRedirect error={error}/>
                 <Typography variant="display1" component="h1">{topic ? topic : 'Latest'} Articles {topic && user && <i className={panelOpen ? 'fa fa-minus-circle' : 'fa fa-plus-circle'} onClick={this.togglePanel}></i>}</Typography>
                 {panelOpen && (<ArticleForm user={user} addArticle={this.addArticle} togglePanel={this.togglePanel}/>)}
                 {!isLoading && this.state.articles.length === 0 && (
@@ -39,25 +41,9 @@ class Articles extends Component {
                 {this.state.articles.map(article => {
                     return (
                         <Fragment key={article._id}>
-                            <Card style={{marginBottom:"0.25rem"}}>
-                                <CardContent>   
-                                    <Grid container spacing={24}>
-                                        {user && (
-                                            <Grid item xs={12} sm={1}>
-                                                <ArticleVote article={article} voteOnContent={this.voteOnArticle} voteArticleId={voteArticleId} direction={direction}/>
-                                            </Grid>
-                                        )}
-                                        <Grid item xs={12} sm={user ? 11 : 12}>
-                                            <ArticleContent article={article}/>
-                                        </Grid>
-                                    </Grid>
-                                </CardContent>
-                            </Card>
-                            <Card>
-                                <CardContent>
-                                    <ArticleMeta article={article}/>   
-                                </CardContent>
-                            </Card>
+                            <ArticleContent article={article} voteArticleId={voteArticleId} direction={direction} user={user} voteOnArticle={this.voteOnArticle}>
+                                <ArticleTeaserContent article={article}/>
+                            </ArticleContent>                        
                         </Fragment>
                     )   
                 })}
@@ -84,13 +70,21 @@ class Articles extends Component {
                 .then(response => {
                     const {articles} = response.data;
                     articles.sort(this.sortData());                
-                    this.setState({
-                        articles,
-                        isLoading:false
-                    })
+                    this.setState(
+                        produce(draft => {
+                            draft.articles = articles;
+                            draft.isLoading = false;
+                        })
+                    );
                 })
                 .catch(err => {
-                    this.setState({isLoading:false})
+                    const {status} = err.response.data;
+                    this.setState(
+                        produce(draft => {
+                            draft.isLoading = false;
+                            draft.error = status
+                        })
+                    );
                 })    
         }else{
             api.getAllArticles()
@@ -103,7 +97,13 @@ class Articles extends Component {
                     })
                 })
                 .catch(err => {
-                    this.setState({isLoading:false})
+                    const {status} = err.response.data;
+                    this.setState(
+                        produce(draft => {
+                            draft.isLoading = false;
+                            draft.error = status
+                        })                        
+                    )
                 })          
         }
     }   
@@ -112,33 +112,52 @@ class Articles extends Component {
         const {topic} = this.props.match.params;
         const {user} = this.props;
         this.setState({isLoading:true})
-        api.addArticle(topic, {title, body, created_by: user._id}).then(response => {
-            const {article} = response.data;
-            this.setState(
-                produce(draft => {
-                    draft.articles.unshift(article);
-                    draft.isLoading = false;
-                })
-            )
-        })
+        api.addArticle(topic, {title, body, created_by: user._id})
+            .then(response => {
+                const {article} = response.data;
+                this.setState(
+                    produce(draft => {
+                        draft.articles.unshift(article);
+                        draft.isLoading = false;
+                    })
+                )
+            })
+            .catch(err => {
+                const {status} = err.response.data;
+                this.setState(
+                    produce(draft => {
+                        draft.isLoading = false;
+                        draft.error = status
+                    })                        
+                )
+            })              
         this.togglePanel();
     }
 
     voteOnArticle = (direction, article) => {
         this.setState({voteArticleId:article._id, direction});
-        api.updateArticleVote(article._id, direction).then(response => {
-            const {article} = response.data;
-            this.setState(
-                produce(draft => {
-                    const index = draft.articles.findIndex(element => {
-                        return element._id === article._id;
+        api.updateArticleVote(article._id, direction)
+            .then(response => {
+                const {article} = response.data;
+                this.setState(
+                    produce(draft => {
+                        const index = draft.articles.findIndex(element => {
+                            return element._id === article._id;
+                        })
+                        draft.articles[index] = article;
+                        draft.voteArticleId = false;
+                        draft.direction = '';                    
                     })
-                    draft.articles[index] = article;
-                    draft.voteArticleId = false;
-                    draft.direction = '';                    
-                })
-            )
-        })
+                )
+            })
+            .catch(err => {
+                const {status} = err.response.data;
+                this.setState(
+                    produce(draft => {
+                        draft.error = status
+                    })                        
+                )
+            })  
     }    
 
     sortData = () => {

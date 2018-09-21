@@ -14,9 +14,10 @@ const styles = {
         height:'38px',
         border:'solid 1px rgba(0, 0, 0, 0.23)',
         textAlign: 'center',
+        backgroundColor:'#fff',
         '&>i': {
             marginTop:'6px',
-            color:'rgba(0, 0, 0, 0.23)',
+            color:'#BA1F31',
             fontSize:'1.6rem'
         }
     },    

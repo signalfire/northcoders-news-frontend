@@ -28,7 +28,6 @@ export default createMuiTheme({
         MuiCard: {
             root: {
                 marginBottom:'2rem',
-                paddingTop:'8px'
             }
         },
         MuiInput: {

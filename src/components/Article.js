@@ -1,80 +1,42 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
-import {Typography, Card, CardContent, Grid} from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 import produce from 'immer';
 
 import Comments from './Comments';
-import ArticleVote from './ArticleVote';
-import ArticleMeta from './ArticleMeta';
+
+import ArticleFullContent from './ArticleFullContent';
+import ArticleContent from './ArticleContent';
+import ErrorRedirect from './ErrorRedirect';
 
 import * as api from '../utils/api';
 
-const styles = {
-    title: {
-        marginBottom:'1rem'
-    },
-    topic: {
-        marginBottom:'0.5rem',
-        color:'#666'
-    },
-    meta: {
-        color:'#666',
-        '&>strong': {
-            display:'block'
-        }
-    },    
-    rounded: {
-        borderRadius:'4px',
-        width:'38px',
-        height:'38px',
-        border:'solid 1px rgba(0, 0, 0, 0.23)',
-        textAlign: 'center',
-        '&>i': {
-            marginTop:'6px',
-            color:'rgba(0, 0, 0, 0.23)',
-            fontSize:'1.6rem'
-        }
-    }
-}
+const styles = {}
 
 class Article extends Component {
     state = {
         article: false,
         voteArticleId: '',
-        direction: ''
+        direction: '',
+        error: false
     }
     render() {
-        const {article, voteArticleId, direction} = this.state;
+        const {article, voteArticleId, direction, error} = this.state;
         const {user, classes} = this.props;
         return (
-            article && (
-                <Fragment>
-                    <Card style={{marginBottom:'0.25rem'}}>
-                        <CardContent>
-                            <Grid container spacing={24}>
-                                {user && (
-                                    <Grid item xs={12} sm={1}>
-                                        <ArticleVote article={article} voteOnContent={this.voteOnArticle} voteArticleId={voteArticleId} direction={direction}/>
-                                    </Grid>
-                                )}
-                                <Grid item xs={12} sm={user ? 11 : 12}>
-                                    <Typography variant="display1" component="h1" className={classes.title}>{article.title.toLowerCase()}</Typography>
-                                    <Typography component="p">{article.body}</Typography>       
-                                </Grid>
-                            </Grid>                            
-                        </CardContent>                       
-                    </Card>
-                    <Card>
-                        <CardContent>
-                            <ArticleMeta article={article}/>                           
-                        </CardContent>
-                    </Card>
-                    {this.state.article && <Comments article={article} user={user}/>}                                    
-                </Fragment>
-            )
+            <Fragment>
+                <ErrorRedirect error={error}/>
+                {article && (
+                    <Fragment>
+                        <ArticleContent article={article} voteArticleId={voteArticleId} direction={direction} user={user} voteOnArticle={this.voteOnArticle}>
+                            <ArticleFullContent article={article}/>
+                        </ArticleContent>
+                        {this.state.article && <Comments article={article} user={user}/>}                                    
+                    </Fragment>
+                )}
+            </Fragment>
         );
     }
 
@@ -84,10 +46,19 @@ class Article extends Component {
     }
 
     getArticle = (id) => {
-        api.getArticle(id).then(response => {
-            const {article} = response.data;
-            this.setState({article})
-        });
+        api.getArticle(id)
+            .then(response => {
+                const {article} = response.data;
+                this.setState(
+                    produce(draft => {
+                        draft.article = article;
+                    })
+                );
+            })
+            .catch(err => {
+                const {status} = err.response.data;
+                this.setState({error: status})
+            });
     }
 
     voteOnArticle = (direction, article) => {

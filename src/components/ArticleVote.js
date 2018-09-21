@@ -32,17 +32,17 @@ const styles = {
 }
 
 const ArticleVote = (props) => {
-    const {classes, article, voteOnContent, voteArticleId, direction} = props;
+    const {classes, article, voteOnArticle, voteArticleId, direction} = props;
     return (
         <Grid container direction="column" justify="center" alignItems="center">
             <Grid>
-                <Button variant="outlined" disabled={voteArticleId === article._id && direction === 'up'} fullWidth onClick={() => voteOnContent('up', article)} className={classes.voteUp}><i className={voteArticleId === article._id && direction === 'up' ? 'fas fa-circle-notch fa-spin' : 'fas fa-thumbs-up'}></i></Button>
+                <Button variant="outlined" disabled={voteArticleId === article._id && direction === 'up'} fullWidth onClick={() => voteOnArticle('up', article)} className={classes.voteUp}><i className={voteArticleId === article._id && direction === 'up' ? 'fas fa-circle-notch fa-spin' : 'fas fa-thumbs-up'}></i></Button>
             </Grid>
             <Grid>
                 <Typography container="p"  className={classes.votes}>{article.votes} Votes</Typography>
             </Grid> 
             <Grid>
-                <Button variant="outlined" disabled={voteArticleId === article._id && direction === 'down'} fullWidth onClick={() => voteOnContent('down', article)} className={classes.voteDown}><i className={voteArticleId === article._id && direction === 'down' ? 'fas fa-circle-notch fa-spin' : 'fas fa-thumbs-down'}></i></Button>
+                <Button variant="outlined" disabled={voteArticleId === article._id && direction === 'down'} fullWidth onClick={() => voteOnArticle('down', article)} className={classes.voteDown}><i className={voteArticleId === article._id && direction === 'down' ? 'fas fa-circle-notch fa-spin' : 'fas fa-thumbs-down'}></i></Button>
             </Grid>                                           
         </Grid>
     );
@@ -51,7 +51,7 @@ const ArticleVote = (props) => {
 ArticleVote.propTypes = {
     classes: PropTypes.object.isRequired,
     article: PropTypes.object.isRequired,
-    voteOnContent: PropTypes.func.isRequired,
+    voteOnArticle: PropTypes.func.isRequired,
     voteArticleId: PropTypes.string.isRequired,
     direction: PropTypes.string.isRequired
 }
