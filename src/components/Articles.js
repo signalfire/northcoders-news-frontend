@@ -31,7 +31,7 @@ class Articles extends Component {
         const {panelOpen, voteArticleId, direction, isLoading} = this.state;
         return (
             <Fragment>
-                <Typography variant="display1" component="h1">{topic ? topic : 'Latest'} Articles {topic && user && <i className={panelOpen ? 'fa fa-minus-circle' : 'fa fa-plus-circle'} onClick={this.togglePanel} style={{float:'right'}}></i>}</Typography>
+                <Typography variant="display1" component="h1">{topic ? topic : 'Latest'} Articles {topic && user && <i className={panelOpen ? 'fa fa-minus-circle' : 'fa fa-plus-circle'} onClick={this.togglePanel}></i>}</Typography>
                 {panelOpen && (<ArticleForm user={user} addArticle={this.addArticle} togglePanel={this.togglePanel}/>)}
                 {!isLoading && this.state.articles.length === 0 && (
                     <Typography component="p">Sorry, no articles found {topic ? `for ${topic}` : ''}</Typography>
