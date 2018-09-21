@@ -5,7 +5,7 @@ import { Card, CardContent, Typography, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 import CommentMeta from './CommentMeta';
-// import CommentVote from './CommentVote';
+import CommentVote from './CommentVote';
 
 const styles = {
     body: {
@@ -39,18 +39,20 @@ const styles = {
 
 class Comment extends Component {
     render() {
-        const {comment, classes, deleteComment, voteOnComment, user, isVoting, direction} = this.props;
+        const {comment, classes, deleteComment, voteOnContent, user, voteCommentId, direction} = this.props;
         return (
             <Fragment>
                 <Card>
                     <CardContent>
                         <Typography component="p" className={classes.body}>{comment.body}</Typography>
                         <CommentMeta comment={comment}/> 
-                        {/* <CommentVote comment={comment} voteOnComment={voteOnComment}  */}
-                        <Button variant="outlined" disabled={isVoting && direction === 'up'}  onClick={() => voteOnComment('up', comment)} className={classes.voteUp} style={{marginRight:'1rem'}}><i className={isVoting && direction === 'up' ? 'fas fa-circle-notch fa-spin' : 'fas fa-thumbs-up'}></i></Button>
-                        <Button variant="outlined" disabled={isVoting && direction === 'down'} onClick={() => voteOnComment('down', comment)} className={classes.voteDown} style={{marginRight:'1rem'}}><i className={isVoting && direction === 'down' ? 'fas fa-circle-notch fa-spin' : 'fas fa-thumbs-down'}></i></Button>
-                        {user && user._id === comment.created_by._id && (
-                            <Button variant="outlined" color="primary" onClick={() => deleteComment(comment)}>Delete</Button>
+                        {user && (
+                            <Fragment>
+                                <CommentVote comment={comment} voteOnContent={voteOnContent} voteCommentId={voteCommentId} direction={direction}/>
+                                {user._id === comment.created_by._id && (
+                                    <Button variant="outlined" color="primary" onClick={() => deleteComment(comment)}>Delete</Button>
+                                )}
+                            </Fragment>
                         )}
                     </CardContent>
                 </Card>            
@@ -62,10 +64,10 @@ class Comment extends Component {
 Comment.propTypes = {
     classes: PropTypes.object.isRequired,
     comment: PropTypes.object.isRequired,
-    voteOnComment: PropTypes.func.isRequired,
+    voteOnContent: PropTypes.func.isRequired,
     deleteComment: PropTypes.func.isRequired,
     user: PropTypes.any.isRequired,
-    isVoting: PropTypes.string.isRequired,
+    voteCommentId: PropTypes.string.isRequired,
     direction: PropTypes.string.isRequired
 
 }

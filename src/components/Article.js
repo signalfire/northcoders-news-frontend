@@ -55,10 +55,12 @@ class Article extends Component {
                     <Card style={{marginBottom:'0.15rem'}}>
                         <CardContent>
                             <Grid container spacing={24}>
-                                <Grid item xs={12} sm={1}>
-                                    <ArticleVote article={article} voteOnContent={this.voteOnArticle} voteArticleId={voteArticleId} direction={direction}/>
-                                </Grid>
-                                <Grid item xs={12} sm={11}>
+                                {user && (
+                                    <Grid item xs={12} sm={1}>
+                                        <ArticleVote article={article} voteOnContent={this.voteOnArticle} voteArticleId={voteArticleId} direction={direction}/>
+                                    </Grid>
+                                )}
+                                <Grid item xs={12} sm={user ? 11 : 12}>
                                     <Typography variant="display1" component="h1" className={classes.title}>{article.title.toLowerCase()}</Typography>
                                     <Typography component="p">{article.body}</Typography>       
                                 </Grid>

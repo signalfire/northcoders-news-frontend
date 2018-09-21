@@ -1,7 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 
-import {Dialog, CircularProgress} from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 import produce from 'immer';
@@ -9,6 +8,7 @@ import moment from 'moment';
 
 import Comment from './Comment';
 import CommentForm from './CommentForm';
+import LoadingDialog from './LoadingDialog';
 
 import * as api from '../utils/api';
 
@@ -17,30 +17,23 @@ const styles = {}
 class Comments extends Component {
     state = {
         comments: [],
-        isVoting: false,
+        voteCommentId: '',
         direction: '',
         isLoading:false
     }
 
     render() {
-        const {comments, isVoting, direction} = this.state;
+        const {comments, voteCommentId, direction} = this.state;
         const {user} = this.props;
         return (
             <Fragment>
                 {user && <CommentForm addComment={this.addComment}/>}
                 {comments.map(comment => {
                     return (
-                        <Comment key={comment._id} user={user} comment={comment} voteOnComment={this.voteOnComment} deleteComment={this.deleteComment} isVoting={isVoting} direction={direction}/>
+                        <Comment key={comment._id} user={user} comment={comment} voteOnContent={this.voteOnComment} deleteComment={this.deleteComment} voteCommentId={voteCommentId} direction={direction}/>
                     )
                 })}    
-                <Dialog
-                    style={{backgroundColor: 'transparent'}}
-                    open={this.state.isLoading}
-                    overlayStyle={{backgroundColor: 'transparent'}}
-                    onClose={this.handleClose}
-                >
-                    <CircularProgress style={{padding:'2rem'}} />
-                </Dialog>                                        
+                <LoadingDialog isLoading={this.state.isLoading}/>                           
             </Fragment>
         );
     }
@@ -51,12 +44,18 @@ class Comments extends Component {
     }
 
     getComments = (article_id) => {
+        this.setState({isLoading:true})
         api.getArticleComments(article_id).then(response => {
             const {comments} = response.data;
             comments.sort((a, b) => { 
                 return moment(b.created_at).format('X') - moment(a.created_at).format('X');
             });
-            this.setState({comments});
+            this.setState(
+                produce(draft => {
+                    draft.comments = comments;
+                    draft.isLoading = false;
+                })
+            );
         });
     }
 
@@ -75,7 +74,7 @@ class Comments extends Component {
     }
 
     voteOnComment = (direction, comment) => {
-        this.setState({isVoting:true, direction});
+        this.setState({voteCommentId:comment._id, direction});
         api.updateCommentVote(comment._id, direction).then(response => {
             const {comment} = response.data;
             this.setState(
@@ -84,8 +83,8 @@ class Comments extends Component {
                         return element._id === comment._id;
                     })
                     draft.comments[index] = comment;
-                    draft.isVoting = false;
-                    draft.direction = '';
+                    draft.voteCommentId = false;
+                    draft.direction = '';     
                 })
             )
 

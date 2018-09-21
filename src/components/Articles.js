@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
-import { Card, CardContent, Typography, Grid, Dialog, CircularProgress } from '@material-ui/core';
+import { Card, CardContent, Typography, Grid } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 import moment from 'moment';
@@ -13,6 +13,7 @@ import ArticleMeta from './ArticleMeta';
 import ArticleContent from './ArticleContent';
 
 import * as api from '../utils/api';
+import LoadingDialog from './LoadingDialog';
 
 const styles = {};
 
@@ -41,10 +42,12 @@ class Articles extends Component {
                             <Card style={{marginBottom:"0.15rem"}}>
                                 <CardContent>   
                                     <Grid container spacing={24}>
-                                        <Grid item xs={12} sm={1}>
-                                            <ArticleVote article={article} voteOnContent={this.voteOnArticle} voteArticleId={voteArticleId} direction={direction}/>
-                                        </Grid>
-                                        <Grid item xs={12} sm={11}>
+                                        {user && (
+                                            <Grid item xs={12} sm={1}>
+                                                <ArticleVote article={article} voteOnContent={this.voteOnArticle} voteArticleId={voteArticleId} direction={direction}/>
+                                            </Grid>
+                                        )}
+                                        <Grid item xs={12} sm={user ? 11 : 12}>
                                             <ArticleContent article={article}/>
                                         </Grid>
                                     </Grid>
@@ -58,14 +61,7 @@ class Articles extends Component {
                         </Fragment>
                     )   
                 })}
-                <Dialog
-                    style={{backgroundColor: 'transparent'}}
-                    open={this.state.isLoading}
-                    overlayStyle={{backgroundColor: 'transparent'}}
-                    onClose={this.handleClose}
-                >
-                    <CircularProgress style={{padding:'2rem'}} />
-                </Dialog>                
+                <LoadingDialog isLoading={this.state.isLoading}/>              
             </Fragment>
         );
     }
