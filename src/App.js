@@ -10,18 +10,19 @@ import NotFound from './components/NotFound';
 
 class App extends Component {
   state = {
-    user: false
+    user: false,
+    sorting: 'sort-by-date-desc'
   }
   render() {
     return (
       <Fragment>
         <Route render={(props) => <Header {...props} user={this.state.user} logoutUser={this.logoutUser}/>}/>   
-        <Route render={(props) => <Topics user={this.state.user}/>}/>
+        <Route render={(props) => <Topics user={this.state.user} sorting={this.state.sorting} changeSorting={this.changeSorting}/>}/>
         <div className="app">
           <Switch>
-            <Route exact path="/" render={({match}) => <Articles match={match} user={this.state.user}/>}/>
-            <Route path="/articles/:topic" render={({match}) => <Articles match={match} user={this.state.user}/>}/>
-            <Route path="/article/:id" render={({match}) => <Article match={match} user={this.state.user}/>}/>
+            <Route exact path="/" render={({match}) => <Articles match={match} user={this.state.user} sorting={this.state.sorting}/>}/>
+            <Route path="/articles/:topic" render={({match}) => <Articles match={match} user={this.state.user} sorting={this.state.sorting}/>}/>
+            <Route path="/article/:id" render={({match}) => <Article match={match} user={this.state.user} sorting={this.state.sorting}/>}/>
             <Route path="/profile/:username" render={({match}) => <Profile match={match} user={this.state.user} changeLoggedInUser={this.changeLoggedInUser}/>}/> 
             <Route component={NotFound}/>      
           </Switch>        
@@ -31,10 +32,15 @@ class App extends Component {
   }
 
   changeLoggedInUser = (user) => {
-    this.setState({user})
+    this.setState({user});
   }
   logoutUser = () => {
-    this.setState({user:false})
+    this.setState({user:false});
+  }
+  changeSorting = (sorting) => {
+    if (typeof(sorting) === 'string'){
+      this.setState({sorting});
+    }
   }
 }
 

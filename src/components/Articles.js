@@ -39,7 +39,7 @@ class Articles extends Component {
                 {this.state.articles.map(article => {
                     return (
                         <Fragment key={article._id}>
-                            <Card style={{marginBottom:"0.15rem"}}>
+                            <Card style={{marginBottom:"0.25rem"}}>
                                 <CardContent>   
                                     <Grid container spacing={24}>
                                         {user && (
@@ -82,9 +82,7 @@ class Articles extends Component {
         if (topic){
             api.getArticlesByTopic(topic).then(response => {
                 const {articles} = response.data;
-                articles.sort((a, b) => { 
-                    return moment(b.created_at).format('X') - moment(a.created_at).format('X');
-                });                
+                articles.sort(this.sortData());                
                 this.setState({
                     articles,
                     isLoading:false
@@ -93,9 +91,7 @@ class Articles extends Component {
         }else{
             api.getAllArticles().then(response => {
                 const {articles} = response.data;
-                articles.sort((a, b) => { 
-                    return moment(b.created_at).format('X') - moment(a.created_at).format('X');
-                });                          
+                articles.sort(this.sortData());                          
                 this.setState({
                     articles,
                     isLoading:false
@@ -137,6 +133,47 @@ class Articles extends Component {
         })
     }    
 
+    sortData = () => {
+        const {sorting} = this.props;
+        switch(sorting){
+            case 'sort-by-date-desc':
+                return this.sortByDate('DESC');
+            case 'sort-by-date-asc':
+                return this.sortByDate('ASC');
+            case 'sort-by-title-desc':
+                return this.sortByTitle('DESC');
+            case 'sort-by-title-asc':
+                return this.sortByTitle('ASC');
+            default:
+                return this.sortByDate('DESC');
+        }
+    }
+ 
+    sortByDate = (order) => {
+        if (order === 'DESC'){
+            return function(a, b) {
+                return moment(b.created_at).format('X') - moment(a.created_at).format('X');
+            }
+        }else{
+            return function(a, b) {
+                return moment(a.created_at).format('X') - moment(b.created_at).format('X');
+            }
+        }
+    }
+
+    sortByTitle = (order) => {
+        if (order === 'DESC'){
+            return function(a, b) {
+                console.log()
+                return b.title.charCodeAt(0) - a.title.charCodeAt(0);
+            }
+        } else {
+            return function(a, b) {
+                return a.title.charCodeAt(0) - b.title.charCodeAt(0);
+            }
+        }
+    }
+
     togglePanel = () => {
         this.setState({panelOpen:!this.state.panelOpen})
     }
@@ -145,7 +182,8 @@ class Articles extends Component {
 Articles.propTypes = {
     match: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
-    user: PropTypes.any.isRequired
+    user: PropTypes.any.isRequired,
+    sorting: PropTypes.string.isRequired
 }
 
 export default withStyles(styles)(Articles);

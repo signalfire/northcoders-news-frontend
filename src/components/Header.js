@@ -39,7 +39,7 @@ class Header extends Component {
         return (
             <AppBar position="static" className={classes.root}>
             <Toolbar>
-                <Typography className={classes.title}><i className="fas fa-eye"></i> Northcoders News</Typography>
+                <Typography className={classes.title}>Northcoders News</Typography>
                 {user && (
                     <Fragment>
                         <IconButton aria-owns={open ? 'menu-appbar' : null} aria-haspopup="true" onClick={this.handleMenu}>

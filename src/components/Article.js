@@ -52,7 +52,7 @@ class Article extends Component {
         return (
             article && (
                 <Fragment>
-                    <Card style={{marginBottom:'0.15rem'}}>
+                    <Card style={{marginBottom:'0.25rem'}}>
                         <CardContent>
                             <Grid container spacing={24}>
                                 {user && (
