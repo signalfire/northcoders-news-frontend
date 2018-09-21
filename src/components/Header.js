@@ -32,29 +32,33 @@ class Header extends Component {
         this.setState({ el: null });
     }
 
+    navigateToProfile = () => {
+        const { history, user } = this.props;
+        this.handleClose();
+        history.push(`/profile/${user.username}`)
+    }
+
+    logoutCurrentUser = () => {
+        const { logoutUser } = this.props;
+        this.handleClose();
+        logoutUser();
+    }
     render() {
-        const { classes, user, logoutUser, history } = this.props;
+        const { classes, user } = this.props;
         const { el } = this.state;
-        const open = Boolean(el);     
         return (
             <AppBar position="static" className={classes.root}>
             <Toolbar>
                 <Typography className={classes.title}>Northcoders News</Typography>
                 {user && (
                     <Fragment>
-                        <IconButton aria-owns={open ? 'menu-appbar' : null} aria-haspopup="true" onClick={this.handleMenu}>
+                        <IconButton aria-owns={Boolean(el) ? 'profile-menu' : null} aria-haspopup="true" onClick={this.handleMenu}>
                             <AccountCircle className={classes.account}/>
                         </IconButton>
                         <Typography className={classes.account}>{user.name}</Typography>
-                        <Menu 
-                            id="menu-appbar"
-                            anchorEl={el}
-                            anchorOrigin={{ vertical: 'top', horizontal: 'right'}}
-                            transformOrigin={{ vertical: 'top', horizontal: 'right'}}
-                            open={open}
-                            onClose={this.handleClose}>
-                            <MenuItem onClick={()=> history.push(`/profile/${user.username}`)}>Profile</MenuItem>
-                            <MenuItem onClick={logoutUser}>Logout</MenuItem>
+                        <Menu id="profile-menu" anchorEl={el} anchorOrigin={{ vertical: 'top', horizontal: 'right'}} transformOrigin={{ vertical: 'top', horizontal: 'right'}} open={Boolean(el)} onClose={this.handleClose}>
+                            <MenuItem onClick={this.navigateToProfile}>Profile</MenuItem>
+                            <MenuItem onClick={this.logoutCurrentUser}>Logout</MenuItem>
                         </Menu>  
                     </Fragment>             
                 )}
