@@ -54,7 +54,7 @@ class Topics extends Component {
                         </Typography>                        
                     </Grid>
                     <Grid item xs={12} sm={1} style={{textAlign:'right',paddingRight:'27px'}}>
-                        <IconButton aria-owns={el ? 'sort-menu' : null} aria-haspopup="true" onClick={this.handleClick}>
+                        <IconButton aria-owns={el ? 'sort-menu' : null} aria-haspopup="true" disabled={this.disableSort()} onClick={this.handleClick}>
                             <MoreVertIcon/>
                         </IconButton>
                         <Menu id="sort-menu" anchorEl={el} open={Boolean(el)} onClose={this.handleClose}>
@@ -83,6 +83,10 @@ class Topics extends Component {
         const {changeSorting} = this.props;
         this.setState({ el: null });
         changeSorting(order);
+    }
+    disableSort = () => {
+        const {location} = this.props;
+        return location.pathname.startsWith('/article/');
     }
 }
 

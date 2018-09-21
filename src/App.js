@@ -17,7 +17,7 @@ class App extends Component {
     return (
       <Fragment>
         <Route render={(props) => <Header {...props} user={this.state.user} logoutUser={this.logoutUser}/>}/>   
-        <Route render={(props) => <Topics user={this.state.user} sorting={this.state.sorting} changeSorting={this.changeSorting}/>}/>
+        <Route render={(props) => <Topics {...props} user={this.state.user} sorting={this.state.sorting} changeSorting={this.changeSorting}/>}/>
         <div className="app">
           <Switch>
             <Route exact path="/" render={({match}) => <Articles match={match} user={this.state.user} sorting={this.state.sorting}/>}/>
