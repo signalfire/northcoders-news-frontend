@@ -11,9 +11,10 @@ import ArticleForm from './ArticleForm';
 import ArticleContent from './ArticleContent';
 import ArticleTeaserContent from './ArticleTeaserContent';
 import ErrorRedirect from './ErrorRedirect';
+import Pager from './Pager';
+import LoadingDialog from './LoadingDialog';
 
 import * as api from '../utils/api';
-import LoadingDialog from './LoadingDialog';
 
 const styles = {};
 
@@ -24,12 +25,15 @@ class Articles extends Component {
         voteArticleId: '',
         direction: '',
         isLoading:false,
-        error: false
+        error: false,
+        currentPage: 1,
+        pageSize: 10,
+        totalPages: 1
     }
     render() {
         const {topic} = this.props.match.params;
         const {user, classes} = this.props;
-        const {panelOpen, voteArticleId, direction, isLoading, error} = this.state;
+        const {panelOpen, voteArticleId, direction, isLoading, error, totalPages} = this.state;
         return (
             <Fragment>
                 <ErrorRedirect error={error}/>
@@ -47,6 +51,7 @@ class Articles extends Component {
                         </Fragment>
                     )   
                 })}
+                <Pager current={this.state.currentPage} total={this.state.totalPages} backPage={this.goBackPage} nextPage={this.goNextPage}/>
                 <LoadingDialog isLoading={this.state.isLoading}/>              
             </Fragment>
         );
@@ -63,10 +68,11 @@ class Articles extends Component {
     }
 
     getArticles = () => {
-        const {topic} = this.props.match.params;
+        const { topic } = this.props.match.params;
+        const { currentPage, pageSize } = this.state;
         this.setState({isLoading:true});
         if (topic){
-            api.getArticlesByTopic(topic)
+            api.getArticlesByTopic(topic, currentPage, pageSize)
                 .then(response => {
                     const {articles} = response.data;
                     articles.sort(this.sortData());                
@@ -87,7 +93,7 @@ class Articles extends Component {
                     );
                 })    
         }else{
-            api.getAllArticles()
+            api.getAllArticles(currentPage, pageSize)
                 .then(response => {
                     const {articles} = response.data;
                     articles.sort(this.sortData());                          
@@ -199,6 +205,22 @@ class Articles extends Component {
                 return a.title.charCodeAt(0) - b.title.charCodeAt(0);
             }
         }
+    }
+
+    goBackPage = () => {
+        this.setState(
+            produce(draft => {
+                draft.currentPage = draft.currentPage - 1;
+            })
+        )
+    }
+
+    goNextPage = () => {
+        this.setState(
+            produce(draft => {
+                draft.currentPage = draft.currentPage + 1;
+            })
+        )
     }
 
     togglePanel = () => {

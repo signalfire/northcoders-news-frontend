@@ -2,14 +2,14 @@ import axios from 'axios';
 
 const API_URL = 'https://northcoders-news-rgc.herokuapp.com/api';
 
-export const getArticlesByTopic = (topic) => {
-    return axios.get(`${API_URL}/topics/${topic}/articles`)
+export const getArticlesByTopic = (topic, currentPage, pageSize) => {
+    return axios.get(`${API_URL}/topics/${topic}/articles?page=${currentPage}&pageSize=${pageSize}`)
 }
 export const getTopics = () => {
     return axios.get(`${API_URL}/topics`);
 }
-export const getAllArticles = () => {
-    return axios.get(`${API_URL}/articles`);
+export const getAllArticles = (currentPage, pageSize) => {
+    return axios.get(`${API_URL}/articles?page=${currentPage}&pageSize=${pageSize}`);
 }
 export const getArticle = (id) => {
     return axios.get(`${API_URL}/articles/${id}`);

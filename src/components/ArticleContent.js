@@ -44,7 +44,7 @@ const ArticleContent = (props) => {
 };
 
 ArticleContent.propTypes = {
-    user: PropTypes.object.isRequired,
+    user: PropTypes.any.isRequired,
     article: PropTypes.object.isRequired,
     children: PropTypes.object.isRequired,
     voteArticleId: PropTypes.string.isRequired,
