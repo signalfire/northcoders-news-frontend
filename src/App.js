@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {Route, Switch} from 'react-router-dom';
 
+import produce from 'immer';
+
 import Profile from './components/Profile';
 import Articles from './components/Articles'
 import Article from './components/Article';
@@ -17,17 +19,17 @@ class App extends Component {
       <Switch>
         <Route exact path="/" render={(props) => (
           <Layout {...props} {...this.state} logoutUser={this.logoutUser} changeSorting={this.changeSorting}>
-            <Articles match={props.match} history={props.history} user={this.state.user} sorting={this.state.sorting}/>
+            <Articles match={props.match} history={props.history} user={this.state.user} sorting={this.state.sorting} changeLoggedInUser={this.changeLoggedInUser}/>
           </Layout>)}
         />
         <Route path="/articles/:topic" render={(props) => (
           <Layout {...props} {...this.state} logoutUser={this.logoutUser} changeSorting={this.changeSorting}>
-            <Articles match={props.match} history={props.history} user={this.state.user} sorting={this.state.sorting}/>
+            <Articles match={props.match} history={props.history} user={this.state.user} sorting={this.state.sorting} changeLoggedInUser={this.changeLoggedInUser}/>
           </Layout>)}
         />
         <Route path="/article/:id" render={(props) => (
           <Layout {...props} {...this.state} logoutUser={this.logoutUser} changeSorting={this.changeSorting}>
-            <Article match={props.match} history={props.history} user={this.state.user} sorting={this.state.sorting}/>
+            <Article match={props.match} history={props.history} user={this.state.user} sorting={this.state.sorting} changeLoggedInUser={this.changeLoggedInUser}/>
           </Layout>)}
         />
         <Route path="/profile/:username" render={(props) => (
@@ -45,24 +47,36 @@ class App extends Component {
             <AppError title="Watch what you input...." message="An error has occurred that means the data provided was not correct. Might need to go to Specsavers"/>
           </Layout>
         )}/>              
-        {/* <Route render={(props) => (
+        <Route path="/500" render={(props) => (
           <Layout {...props} {...this.state} logoutUser={this.logoutUser} changeSorting={this.changeSorting}>
-            <AppError title="I'm lost..." message="A strange error I didn't plan for has occurred....nobody panic"/>
+            <AppError title="Woah...." message="A really bad error occurred...the developer should be shot"/>
           </Layout>
-        )}/>    */}
+        )}/>              
       </Switch>        
     );
   }
 
   changeLoggedInUser = (user) => {
-    this.setState({user});
+    this.setState(
+      produce(draft => {
+        draft.user = user;
+      })
+    );
   }
   logoutUser = () => {
-    this.setState({user:false});
+    this.setState(
+      produce(draft => {
+        draft.user = false;
+      })
+    );
   }
   changeSorting = (sorting) => {
     if (typeof(sorting) === 'string'){
-      this.setState({sorting});
+      this.setState(
+        produce(draft => {
+          draft.sorting = sorting;
+        })
+      );
     }
   }
 }

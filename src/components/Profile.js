@@ -64,26 +64,42 @@ class Profile extends Component {
     componentDidMount() {
         this.getUserProfile();
     }
-    getUserArticles() {
-        api.getAllArticles().then(response => {
-            let {articles} = response.data;
-            articles = articles.filter(article => article.created_by._id === this.state.user._id);
-            this.setState({articles});
-        })
+    getUserArticles(username) {
+        api.getUserArticles(username)
+            .then(response => {
+                let {articles} = response.data;
+                this.setState(
+                    produce(draft => {
+                        draft.articles = articles;
+                    })
+                );
+            })
+            .catch(err => {
+                const {status} = err.response.data;
+                this.setState(
+                    produce(draft => {
+                        draft.error = status;
+                    })
+                );
+            });              
     }
     getUserProfile() {
         const {username} = this.props.match.params;
         api.getUser(username)
             .then(response => {
                 const {user} = response.data;
-                this.setState({user});
-                this.getUserArticles();
+                this.setState(
+                    produce(draft => {
+                        draft.user = user;
+                    })
+                );
+                this.getUserArticles(username);
             })
             .catch(err => {
                 const {status} = err.response.data;
                 this.setState(
                     produce(draft => {
-                        draft.error = status
+                        draft.error = status;
                     })
                 );                
             })

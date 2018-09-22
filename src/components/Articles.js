@@ -4,17 +4,17 @@ import PropTypes from 'prop-types';
 import { Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
-import moment from 'moment';
 import produce from 'immer';
 
 import ArticleForm from './ArticleForm';
 import ArticleContent from './ArticleContent';
 import ArticleTeaserContent from './ArticleTeaserContent';
+import ArticlePager from './ArticlePager';
 import ErrorRedirect from './ErrorRedirect';
-import Pager from './Pager';
 import LoadingDialog from './LoadingDialog';
 
 import * as api from '../utils/api';
+import NoArticles from './NoArticles';
 
 const styles = {};
 
@@ -28,30 +28,29 @@ class Articles extends Component {
         error: false,
         currentPage: 1,
         pageSize: 10,
-        totalPages: 1
+        totalPages: 1,
+        voteHistory: []
     }
     render() {
         const {topic} = this.props.match.params;
-        const {user, classes} = this.props;
-        const {panelOpen, voteArticleId, direction, isLoading, error, totalPages} = this.state;
+        const {user, changeLoggedInUser} = this.props;
+        const {articles, panelOpen, voteArticleId, direction, isLoading, error, currentPage, totalPages, voteHistory} = this.state;
         return (
             <Fragment>
                 <ErrorRedirect error={error}/>
                 <Typography variant="display1" component="h1">{topic ? topic : 'Latest'} Articles {topic && user && <i className={panelOpen ? 'fa fa-minus-circle' : 'fa fa-plus-circle'} onClick={this.togglePanel}></i>}</Typography>
-                {panelOpen && (<ArticleForm user={user} addArticle={this.addArticle} togglePanel={this.togglePanel}/>)}
-                {!isLoading && this.state.articles.length === 0 && (
-                    <Typography component="p">Sorry, no articles found {topic ? `for ${topic}` : ''}</Typography>
-                )}
-                {this.state.articles.map(article => {
+                <ArticleForm user={user} panelOpen={panelOpen} addArticle={this.addArticle} togglePanel={this.togglePanel}/>
+                <NoArticles isLoading={isLoading} articles={articles} topic={topic} />
+                {articles.map(article => {
                     return (
                         <Fragment key={article._id}>
-                            <ArticleContent article={article} voteArticleId={voteArticleId} direction={direction} user={user} voteOnArticle={this.voteOnArticle}>
+                            <ArticleContent article={article} voteArticleId={voteArticleId} direction={direction} user={user} voteOnArticle={this.voteOnArticle} voteHistory={voteHistory} changeLoggedInUser={changeLoggedInUser}>
                                 <ArticleTeaserContent article={article}/>
                             </ArticleContent>                        
                         </Fragment>
                     )   
                 })}
-                <Pager current={this.state.currentPage} total={this.state.totalPages} backPage={this.goBackPage} nextPage={this.goNextPage}/>
+                <ArticlePager current={currentPage} total={totalPages} backPage={this.goBackPage} nextPage={this.goNextPage}/>
                 <LoadingDialog isLoading={this.state.isLoading}/>              
             </Fragment>
         );
@@ -63,61 +62,71 @@ class Articles extends Component {
 
     componentDidUpdate(prevProps, prevState){
         if (prevProps !== this.props){
+            if (prevProps.match.params !== this.props.match.params){
+                this.setState(
+                    produce(draft => {
+                        draft.currentPage = 1;
+                    })
+                );
+            }
+            if (prevProps.sorting !== this.props.sorting){
+                this.setState(
+                    produce(draft => {
+                        draft.currentPage = 1;
+                    })
+                );
+            }
+            this.getArticles();
+        }
+        if (prevProps.sorting === this.props.sorting && prevState.currentPage !== this.state.currentPage){
             this.getArticles();
         }
     }
 
-    getArticles = () => {
+    getArticleQuery = () => {
         const { topic } = this.props.match.params;
         const { currentPage, pageSize } = this.state;
-        this.setState({isLoading:true});
-        if (topic){
-            api.getArticlesByTopic(topic, currentPage, pageSize)
-                .then(response => {
-                    const {articles} = response.data;
-                    articles.sort(this.sortData());                
-                    this.setState(
-                        produce(draft => {
-                            draft.articles = articles;
-                            draft.isLoading = false;
-                        })
-                    );
-                })
-                .catch(err => {
-                    const {status} = err.response.data;
-                    this.setState(
-                        produce(draft => {
-                            draft.isLoading = false;
-                            draft.error = status
-                        })
-                    );
-                })    
-        }else{
-            api.getAllArticles(currentPage, pageSize)
-                .then(response => {
-                    const {articles} = response.data;
-                    articles.sort(this.sortData());                          
-                    this.setState({
-                        articles,
-                        isLoading:false
+        if (topic) return api.getArticlesByTopic(topic, currentPage, pageSize, this.getSort())
+        return api.getAllArticles(currentPage, pageSize, this.getSort())
+    }
+
+    getArticles = () => {
+        this.setState(
+            produce(draft => {
+                draft.isLoading = true;
+            })
+        );
+        this.getArticleQuery()
+            .then(response => {
+                const {articles, count} = response.data;
+                this.setState(
+                    produce(draft => {
+                        draft.articles = articles;
+                        draft.isLoading = false;
+                        draft.totalPages = Math.ceil(count / this.state.pageSize);
                     })
-                })
-                .catch(err => {
-                    const {status} = err.response.data;
-                    this.setState(
-                        produce(draft => {
-                            draft.isLoading = false;
-                            draft.error = status
-                        })                        
-                    )
-                })          
-        }
+                );
+            })
+            .catch(err => {
+                const {status} = err.response.data;
+                this.setState(
+                    produce(draft => {
+                        draft.isLoading = false;
+                        draft.error = status;
+                    })
+                );
+            })          
     }   
     
     addArticle = (title, body) => {
         const {topic} = this.props.match.params;
         const {user} = this.props;
-        this.setState({isLoading:true})
+        this.setState(
+            produce(draft => {
+                draft.isLoading = true;
+                draft.panelOpen = !this.state.panelOpen
+            })
+        );
         api.addArticle(topic, {title, body, created_by: user._id})
             .then(response => {
                 const {article} = response.data;
@@ -126,93 +135,67 @@ class Articles extends Component {
                         draft.articles.unshift(article);
                         draft.isLoading = false;
                     })
-                )
+                );
             })
             .catch(err => {
                 const {status} = err.response.data;
                 this.setState(
                     produce(draft => {
                         draft.isLoading = false;
-                        draft.error = status
+                        draft.error = status;
                     })                        
-                )
+                );
             })              
-        this.togglePanel();
     }
 
     voteOnArticle = (direction, article) => {
-        this.setState({voteArticleId:article._id, direction});
+        this.setState(
+            produce(draft => {
+                draft.voteArticleId = article._id;
+                draft.direction = direction;
+            })
+        );
         api.updateArticleVote(article._id, direction)
             .then(response => {
-                const {article} = response.data;
+                const {article:updatedArticle} = response.data;
                 this.setState(
                     produce(draft => {
                         const index = draft.articles.findIndex(element => {
-                            return element._id === article._id;
-                        })
-                        draft.articles[index] = article;
+                            return element._id === updatedArticle._id;
+                        });
+                        updatedArticle.votes = direction === 'up' ? article.votes + 1 : article.votes - 1;
+                        draft.articles[index] = updatedArticle;
                         draft.voteArticleId = false;
-                        draft.direction = '';                    
+                        draft.direction = ''; 
+                        draft.voteHistory.push({id: updatedArticle._id, direction});
                     })
-                )
+                );
             })
             .catch(err => {
                 const {status} = err.response.data;
                 this.setState(
                     produce(draft => {
-                        draft.error = status
+                        draft.error = status;
                     })                        
-                )
-            })  
+                );
+            });  
     }    
-
-    sortData = () => {
-        const {sorting} = this.props;
-        switch(sorting){
-            case 'sort-by-date-desc':
-                return this.sortByDate('DESC');
-            case 'sort-by-date-asc':
-                return this.sortByDate('ASC');
-            case 'sort-by-title-desc':
-                return this.sortByTitle('DESC');
-            case 'sort-by-title-asc':
-                return this.sortByTitle('ASC');
-            default:
-                return this.sortByDate('DESC');
+    getSort = () => {
+        const sortList = {
+            'sort-by-date-desc': {sort: 'created_at', direction: -1},
+            'sort-by-date-asc': {sort: 'created_at', direction: 1},
+            'sort-by-title-desc': {sort: 'title', direction: -1},
+            'sort-by-title-asc':  {sort: 'title', direction: 1}
         }
+        return sortList[this.props.sorting];
     }
  
-    sortByDate = (order) => {
-        if (order === 'DESC'){
-            return function(a, b) {
-                return moment(b.created_at).format('X') - moment(a.created_at).format('X');
-            }
-        }else{
-            return function(a, b) {
-                return moment(a.created_at).format('X') - moment(b.created_at).format('X');
-            }
-        }
-    }
-
-    sortByTitle = (order) => {
-        if (order === 'DESC'){
-            return function(a, b) {
-                console.log()
-                return b.title.charCodeAt(0) - a.title.charCodeAt(0);
-            }
-        } else {
-            return function(a, b) {
-                return a.title.charCodeAt(0) - b.title.charCodeAt(0);
-            }
-        }
-    }
-
     goBackPage = () => {
         this.setState(
             produce(draft => {
                 draft.currentPage = draft.currentPage - 1;
             })
-        )
+        );
     }
 
     goNextPage = () => {
@@ -220,11 +203,14 @@ class Articles extends Component {
             produce(draft => {
                 draft.currentPage = draft.currentPage + 1;
             })
-        )
+        );
     }
-
     togglePanel = () => {
-        this.setState({panelOpen:!this.state.panelOpen})
+        this.setState(
+            produce(draft => {
+                draft.panelOpen = !this.state.panelOpen
+            })
+        );
     }
 }
 
@@ -232,7 +218,8 @@ Articles.propTypes = {
     match: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     user: PropTypes.any.isRequired,
-    sorting: PropTypes.string.isRequired
+    sorting: PropTypes.string.isRequired,
+    changeLoggedInUser: PropTypes.func.isRequired
 }
 
 export default withStyles(styles)(Articles);

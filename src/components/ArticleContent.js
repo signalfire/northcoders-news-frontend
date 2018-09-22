@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 import ArticleVote from './ArticleVote';
 import ArticleMeta from './ArticleMeta';
+import ArticleVoteHistory from './ArticleVoteHistory';
 
 const styles = {
     meta: {
@@ -17,15 +18,21 @@ const styles = {
 }
 
 const ArticleContent = (props) => {
-    const {user, article, children, voteOnArticle, voteArticleId, direction, classes} = props;
+    const {user, article, children, voteOnArticle, voteArticleId, direction, classes, voteHistory, changeLoggedInUser} = props;
+    const voted = voteHistory.find(item => item.id === article._id);
     return (
         <Fragment>
             <Card style={{marginBottom:'1rem'}}>
                 <CardContent>
                     <Grid container spacing={24}>
-                        {user && (
+                        {user && !voted && (
                             <Grid item xs={12} sm={1}>
                                 <ArticleVote article={article} voteOnArticle={voteOnArticle} voteArticleId={voteArticleId} direction={direction}/>
+                            </Grid>
+                        )}
+                        {user && voted && (
+                            <Grid item xs={12} sm={1}>
+                                <ArticleVoteHistory voted={voted} article={article}/>
                             </Grid>
                         )}
                         <Grid item xs={12} sm={user ? 11 : 12}>
@@ -36,7 +43,7 @@ const ArticleContent = (props) => {
             </Card>
             <Card className={classes.meta}>
                 <CardContent>
-                    <ArticleMeta article={article}/>                           
+                    <ArticleMeta user={user} changeLoggedInUser={changeLoggedInUser} article={article}/>                           
                 </CardContent>
             </Card>
         </Fragment>
@@ -47,10 +54,11 @@ ArticleContent.propTypes = {
     user: PropTypes.any.isRequired,
     article: PropTypes.object.isRequired,
     children: PropTypes.object.isRequired,
-    voteArticleId: PropTypes.string.isRequired,
+    voteArticleId: PropTypes.any.isRequired,
     direction: PropTypes.string.isRequired,
     classes: PropTypes.object.isRequired,
-    voteOnArticle: PropTypes.func.isRequired
+    voteOnArticle: PropTypes.func.isRequired,
+    changeLoggedInUser: PropTypes.func.isRequired
 }
 
 export default withStyles(styles)(ArticleContent);

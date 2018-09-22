@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
+import produce from 'immer';
+
 import { Input, Button, Card, CardContent, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -23,7 +25,8 @@ class ArticleForm extends Component {
         error: ''
     }
     render() {
-        const {togglePanel, classes} = this.props;
+        const {togglePanel, classes, panelOpen} = this.props;
+        if (!panelOpen) return null;
         return (
             <Fragment>
                 <Card>
@@ -46,27 +49,36 @@ class ArticleForm extends Component {
  
     handleChange = (event) => {
         const {name, value} = event.target;
-        this.setState({
-            [name]: value
-        });
+        this.setState(
+            produce(draft => {
+                draft[name] = value;
+            })
+        );
     }    
     addArticle = () => {
         if (this.state.title.length === 0 || this.state.body.length === 0){
-            this.setState({error: 'Title and/or body fields were missing'});
+            this.setState(
+                produce(draft => {
+                    draft.error = 'Title and/or body fields were missing';
+                })
+            );
         }else{
             this.props.addArticle(this.state.title, this.state.body);
-            this.setState({
-                title: '',
-                body: ''
-             })    
+            this.setState(
+                produce(draft => {
+                    draft.title = '';
+                    draft.body = '';
+                })
+            )    
         }
     }
 }
 
 ArticleForm.propTypes = {
-    user: PropTypes.object,
+    user: PropTypes.any.isRequired,
     addArticle: PropTypes.func.isRequired,
-    togglePanel: PropTypes.func.isRequired
+    togglePanel: PropTypes.func.isRequired,
+    panelOpen: PropTypes.bool.isRequired
 }
 
 export default withStyles(styles)(ArticleForm);

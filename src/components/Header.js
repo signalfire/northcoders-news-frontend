@@ -25,11 +25,11 @@ class Header extends Component {
     }
 
     handleMenu = event => {
-        this.setState({ el: event.currentTarget });
+        this.setState({el: event.currentTarget});
     }
 
     handleClose = () => {
-        this.setState({ el: null });
+        this.setState({el: null});
     }
 
     navigateToProfile = () => {
@@ -43,13 +43,16 @@ class Header extends Component {
         this.handleClose();
         logoutUser();
     }
+    goToHome = () => {
+       this.props.history.push('/');
+    }
     render() {
         const { classes, user } = this.props;
         const { el } = this.state;
         return (
             <AppBar position="static" className={classes.root}>
             <Toolbar>
-                <Typography className={classes.title}>Northcoders News</Typography>
+                <Typography className={classes.title} onClick={()=>this.goToHome()}>Northcoders News</Typography>
                 {user && (
                     <Fragment>
                         <IconButton aria-owns={Boolean(el) ? 'profile-menu' : null} aria-haspopup="true" onClick={this.handleMenu}>

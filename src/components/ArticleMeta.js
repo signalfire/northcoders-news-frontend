@@ -34,11 +34,11 @@ const styles = {
 }
 
 const ArticleMeta = (props) => {
-    const {article, classes} = props;
+    const {article, classes, changeLoggedInUser} = props;
     return (
         <Grid container spacing={24} className={classes.root}>
             <Grid item>
-                <Avatar alt={article.created_by.name} src={`http://i.pravatar.cc/100?q=${article.created_by.username}`} />                                                                    
+                <Avatar alt={article.created_by.name} src={`http://i.pravatar.cc/100?q=${article.created_by.username}`} onClick={()=>changeLoggedInUser(article.created_by)} />                                                                    
             </Grid>
             <Grid item>
                 <Typography component="p" className={classes.meta}><strong>Created By</strong><Link to={`/profile/${article.created_by.username}`} className={classes.link}>{article.created_by.username}</Link></Typography>  
@@ -66,6 +66,7 @@ const ArticleMeta = (props) => {
 ArticleMeta.propTypes = {
     classes: PropTypes.object.isRequired,
     article: PropTypes.object.isRequired,
+    changeLoggedInUser: PropTypes.func.isRequired
 }
 
 export default withStyles(styles)(ArticleMeta);

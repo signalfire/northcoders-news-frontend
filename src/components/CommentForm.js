@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
+import produce from 'immer';
+
 import { Typography, Input, Button, Card, CardContent } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -43,19 +45,27 @@ class CommentForm extends Component {
 
     handleChange = (event) => {
         const {name, value} = event.target;
-        this.setState({
-            [name]: value
-        });
+        this.setState(
+            produce(draft => {
+                draft[name] = value;
+            })
+        );
     }
 
     addComment = () => {
         if (this.state.body.length === 0){
-            this.setState({error: 'Body fields were missing'});
+            this.setState(
+                produce(draft => {
+                    draft.error = 'Body fields were missing';
+                })
+            );
         }else{
             this.props.addComment(this.state.body);
-            this.setState({
-                body:''
-            })
+            this.setState(
+                produce(draft => {
+                    draft.body = '';
+                })
+            );
         }
     }
 }

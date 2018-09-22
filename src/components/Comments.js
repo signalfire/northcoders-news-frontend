@@ -9,6 +9,7 @@ import moment from 'moment';
 import Comment from './Comment';
 import CommentForm from './CommentForm';
 import LoadingDialog from './LoadingDialog';
+import ErrorRedirect from './ErrorRedirect';
 
 import * as api from '../utils/api';
 
@@ -19,14 +20,16 @@ class Comments extends Component {
         comments: [],
         voteCommentId: '',
         direction: '',
-        isLoading:false
+        isLoading:false,
+        error: false
     }
 
     render() {
-        const {comments, voteCommentId, direction} = this.state;
+        const {comments, voteCommentId, direction, error} = this.state;
         const {user} = this.props;
         return (
             <Fragment>
+                <ErrorRedirect error={error}/>
                 {user && <CommentForm addComment={this.addComment}/>}
                 {comments.map(comment => {
                     return (
@@ -35,7 +38,7 @@ class Comments extends Component {
                 })}    
                 <LoadingDialog isLoading={this.state.isLoading}/>                           
             </Fragment>
-        );
+        );    
     }
 
     componentDidMount() {
@@ -44,64 +47,116 @@ class Comments extends Component {
     }
 
     getComments = (article_id) => {
-        this.setState({isLoading:true})
-        api.getArticleComments(article_id).then(response => {
-            const {comments} = response.data;
-            comments.sort((a, b) => { 
-                return moment(b.created_at).format('X') - moment(a.created_at).format('X');
-            });
-            this.setState(
-                produce(draft => {
-                    draft.comments = comments;
-                    draft.isLoading = false;
-                })
-            );
-        });
+        this.setState(
+            produce(draft => {
+                draft.isLoading = true;
+            })
+        );
+        api.getArticleComments(article_id)
+            .then(response => {
+                const {comments} = response.data;
+                comments.sort((a, b) => { 
+                    return moment(b.created_at).format('X') - moment(a.created_at).format('X');
+                });
+                this.setState(
+                    produce(draft => {
+                        draft.comments = comments;
+                        draft.isLoading = false;
+                    })
+                );
+            })
+            .catch(err => {
+                const {status} = err.response.data;
+                this.setState(
+                    produce(draft => {
+                        draft.error = status;
+                    })
+                );
+            });            
     }
 
     addComment = (body) => {
         const {article, user} = this.props;
-        this.setState({isLoading:true})
-        api.addArticleComment(article._id, {body, created_by: user._id}).then(response => {
-            const {comment} = response.data;
-            this.setState(
-                produce(draft => {
-                    draft.comments.unshift(comment);
-                    draft.isLoading = false;
-                })
-            )
-        })
+        this.setState(
+            produce(draft => {
+                draft.isLoading = true;
+            })
+        );
+        api.addArticleComment(article._id, {body, created_by: user._id})
+            .then(response => {
+                const {comment} = response.data;
+                this.setState(
+                    produce(draft => {
+                        draft.comments.unshift(comment);
+                        draft.isLoading = false;
+                    })
+                );
+            })
+            .catch(err => {
+                const {status} = err.response.data;
+                this.setState(
+                    produce(draft => {
+                        draft.error = status;
+                    })
+                );
+            });              
     }
 
     voteOnComment = (direction, comment) => {
-        this.setState({voteCommentId:comment._id, direction});
-        api.updateCommentVote(comment._id, direction).then(response => {
-            const {comment} = response.data;
-            this.setState(
-                produce(draft => {
-                    const index = draft.comments.findIndex(element => {
-                        return element._id === comment._id;
+        this.setState(
+            produce(draft => {
+                draft.voteCommentId = comment._id;
+                draft.direction = direction;
+            })
+        );
+        api.updateCommentVote(comment._id, direction)
+            .then(response => {
+                const {comment} = response.data;
+                this.setState(
+                    produce(draft => {
+                        const index = draft.comments.findIndex(element => {
+                            return element._id === comment._id;
+                        });
+                        draft.comments[index] = comment;
+                        draft.voteCommentId = false;
+                        draft.direction = '';     
                     })
-                    draft.comments[index] = comment;
-                    draft.voteCommentId = false;
-                    draft.direction = '';     
-                })
-            )
-
-        });
+                );
+            })
+            .catch(err => {
+                const {status} = err.response.data;
+                this.setState(
+                    produce(draft => {
+                        draft.error = status;
+                    })
+                );
+            });              
     } 
     
     deleteComment = (comment) => {
-        this.setState({isLoading:true})
-        api.deleteArticleComment(comment._id).then(response => {
-            const {comment:deleted} = response.data;
-            this.setState(
-                produce(draft => {
-                    draft.comments = draft.comments.filter(comment => comment._id !== deleted._id)
-                    draft.isLoading = false;
-                })
-            )
-        })
+        this.setState(
+            produce(draft => {
+                draft.isLoading = true;
+            })
+        );
+        api.deleteArticleComment(comment._id)
+            .then(response => {
+                const {comment:deleted} = response.data;
+                this.setState(
+                    produce(draft => {
+                        draft.comments = draft.comments.filter(comment => comment._id !== deleted._id);
+                        draft.isLoading = false;
+                    })
+                );
+            })
+            .catch(err => {
+                const {status} = err.response.data;
+                this.setState(
+                    produce(draft => {
+                        draft.error = status;
+                    })
+                );
+            });  
     }
 }
 

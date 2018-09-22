@@ -2,14 +2,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
+import produce from 'immer';
+
 import { Typography, Grid, Menu, MenuItem, IconButton } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { withStyles } from '@material-ui/core/styles';
 
 import * as api from '../utils/api';
+import ErrorRedirect from './ErrorRedirect';
 
 const styles = {
-    root: {
+    bar: {
         background: "linear-gradient(to bottom, #f5f5f5, #e4e3e3)",
         paddingTop:"0.5rem",
         paddingBottom:"0.5rem",
@@ -36,13 +39,15 @@ const styles = {
 class Topics extends Component {
     state = {
         topics: [],
-        el: null
+        el: null,
+        error: false
     }
     render() {
         const {classes} = this.props;
-        const {el} = this.state;
+        const {el, error} = this.state;
         return (
-            <div className={classes.root}>
+            <div className={classes.bar}>
+                <ErrorRedirect error={error}/>
                 <Grid container>
                     <Grid item xs={12} sm={11}>
                         <Typography component="ul" className={classes.list}>
@@ -69,19 +74,32 @@ class Topics extends Component {
         );
     }
     componentDidMount() {
-        api.getTopics().then(response => {
-            const {topics} = response.data;
-            this.setState({topics});
-        });
+        api.getTopics()
+            .then(response => {
+                const {topics} = response.data;
+                this.setState(
+                    produce(draft => {
+                        draft.topics = topics;
+                    })
+                );
+            })
+            .catch(err => {
+                const {status} = err.response.data;
+                this.setState(
+                    produce(draft => {
+                        draft.error = status;
+                    })
+                );
+            });  
     }
 
     handleClick = (event) => {
-        this.setState({el: event.currentTarget});
+        this.setState({el:event.currentTarget});
     }
 
     handleClose = (order) => {
         const {changeSorting} = this.props;
-        this.setState({ el: null });
+        this.setState({el: null});
         changeSorting(order);
     }
     disableSort = () => {
