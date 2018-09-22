@@ -37,26 +37,26 @@ const ArticleMeta = (props) => {
     const {article, classes, changeLoggedInUser} = props;
     return (
         <Grid container spacing={24} className={classes.root}>
-            <Grid item>
+            <Grid item xs={2} md="auto">
                 <Avatar alt={article.created_by.name} src={`http://i.pravatar.cc/100?q=${article.created_by.username}`} onClick={()=>changeLoggedInUser(article.created_by)} />                                                                    
             </Grid>
-            <Grid item>
+            <Grid item xs={10} md="auto">
                 <Typography component="p" className={classes.meta}><strong>Created By</strong><Link to={`/profile/${article.created_by.username}`} className={classes.link}>{article.created_by.username}</Link></Typography>  
             </Grid>
-            <Grid item>
+            <Grid item xs={2} md="auto">
                 <div className={classes.rounded}>
                     <i className="far fa-calendar-alt"></i>
                 </div>
             </Grid>
-            <Grid item>
+            <Grid item xs={10} md="auto">
                 <Typography component="p" className={classes.meta}><strong>Published On</strong>{moment(article.created_at).format('DD/MM/YYYY HH:mm')}</Typography>                                              
             </Grid>
-            <Grid item>
+            <Grid item xs={2} md="auto">
                 <div className={classes.rounded}>
                     <i className="fas fa-comments"></i>                                                    
                 </div>                                            
             </Grid>
-            <Grid item>
+            <Grid item xs={10} md="auto">
                 <Typography component="p" className={classes.meta}><strong>Comments</strong>{article.comment_count} people have commented on this article</Typography>                                                                                          
             </Grid>
         </Grid>

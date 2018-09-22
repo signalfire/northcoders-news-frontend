@@ -4,5 +4,10 @@ body {
   background-color:whitesmoke;
 }
 .app{
-  padding:2rem;
+  padding:0.8rem;
+}
+@media(min-width:768px){
+  .app{
+    padding:2rem;
+  }
 }

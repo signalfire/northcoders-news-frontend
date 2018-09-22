@@ -15,25 +15,41 @@ const styles = {
     bar: {
         background: "linear-gradient(to bottom, #f5f5f5, #e4e3e3)",
         paddingTop:"0.5rem",
-        paddingBottom:"0.5rem",
+        paddingBottom:"0.2rem",
+        "@media(min-width:768px)": {
+            paddingBottom:"0.5rem"
+        }
     },
     list:{
         listStyleType:"none",
         margin:"0",
         padding:"0",
-        paddingLeft:"27px",
-        paddingTop:"8px"
+        paddingLeft:"10px",
+        paddingTop:"8px",
+        "@media(min-width:768px)": {
+            paddingLeft:"27px",
+        }
     },
     item:{
-        marginRight:"1rem",
+        marginRight:"0.5rem",
         display:"inline-block",
-        fontSize:"1.2rem", 
+        fontSize:"0.9rem", 
+        "@media(min-width:768px)": {
+            fontSize:"1.2rem", 
+            marginRight:"1rem"
+        }
     },
     link:{
         color:"#000",
         textDecoration:"none"
     },
-    football:{}
+    button:{
+        paddingRight:"0",
+        top:"-3px",
+        "@media(min-width:768px":{
+            top:"0"
+        }
+    }
 };
 
 class Topics extends Component {
@@ -49,7 +65,7 @@ class Topics extends Component {
             <div className={classes.bar}>
                 <ErrorRedirect error={error}/>
                 <Grid container>
-                    <Grid item xs={12} sm={11}>
+                    <Grid item xs={11}>
                         <Typography component="ul" className={classes.list}>
                             <Typography component="li" className={classes.item}>Topics</Typography>
                             <Typography component="li" className={classes.item}><Link to="/" className={classes.link}>All Articles</Link></Typography>
@@ -58,8 +74,8 @@ class Topics extends Component {
                             })}
                         </Typography>                        
                     </Grid>
-                    <Grid item xs={12} sm={1} style={{textAlign:'right',paddingRight:'27px'}}>
-                        <IconButton aria-owns={el ? 'sort-menu' : null} aria-haspopup="true" disabled={this.disableSort()} onClick={this.handleClick}>
+                    <Grid item xs={1} style={{textAlign:'right'}}>
+                        <IconButton aria-owns={el ? 'sort-menu' : null} aria-haspopup="true" disabled={this.disableSort()} onClick={this.handleClick} className={classes.button}>
                             <MoreVertIcon/>
                         </IconButton>
                         <Menu id="sort-menu" anchorEl={el} open={Boolean(el)} onClose={this.handleClose}>
