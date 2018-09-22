@@ -39,26 +39,26 @@ const CommentMeta = (props) => {
     const {comment, classes} = props;
     return (
         <Grid container spacing={24} className={classes.root}>
-            <Grid item>
+            <Grid item xs={2} md="auto">
                 <Avatar alt={comment.created_by.name} src={`http://i.pravatar.cc/100?q=${comment.created_by.username}`} />                                                                    
             </Grid>
-            <Grid item>
+            <Grid item xs={10} md="auto">
                 <Typography component="p" className={classes.meta}><strong>Comment By</strong><Link to={`/profile/${comment.created_by.username}`} className={classes.link}>{comment.created_by.username}</Link></Typography>  
             </Grid>
-            <Grid item>
+            <Grid item xs={2} md="auto">
                 <div className={classes.rounded}>
                     <i className="far fa-calendar-alt"></i>
                 </div>
             </Grid>
-            <Grid item>
+            <Grid item xs={10} md="auto">
                 <Typography component="p" className={classes.meta}><strong>Comment On</strong>{moment(comment.created_at).format('DD/MM/YYYY HH:mm')}</Typography>                                              
             </Grid>
-            <Grid item>
+            <Grid item xs={2} md="auto">
                 <div className={classes.rounded}>
                     <i className="fas fa-check"></i>
                 </div>
             </Grid>
-            <Grid item>
+            <Grid item xs={2} md="auto">
                 <Typography component="p" className={classes.meta}><strong>Votes</strong>{comment.votes}</Typography>                                              
             </Grid>
         </Grid> 

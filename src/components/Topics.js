@@ -46,8 +46,9 @@ const styles = {
     button:{
         paddingRight:"0",
         top:"-3px",
-        "@media(min-width:768px":{
-            top:"0"
+        "@media(min-width:768px)":{
+            top:"0",
+            paddingRight:"27px"
         }
     }
 };
