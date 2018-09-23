@@ -25,7 +25,7 @@ const styles = {
     }  
 }
 
-const ArticleContent = (props) => {
+const ArticleTeaserContent = (props) => {
     const {article, classes} = props;
     return (
         <Fragment>
@@ -38,9 +38,9 @@ const ArticleContent = (props) => {
     );
 };
 
-ArticleContent.propType = {
+ArticleTeaserContent.propType = {
     article: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired
 }
 
-export default withStyles(styles)(ArticleContent);
+export default withStyles(styles)(ArticleTeaserContent);

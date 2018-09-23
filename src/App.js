@@ -57,6 +57,11 @@ class App extends Component {
           <Layout {...props} {...this.state} logoutUser={this.logoutUser} changeSorting={this.changeSorting}>
             <AppError title="Woah...." message="A really bad error occurred...the developer should be shot"/>
           </Layout>
+        )}/>   
+        <Route render={(props) => (
+          <Layout {...props} {...this.state} logoutUser={this.logoutUser} changeSorting={this.changeSorting}>
+            <AppError title="Whoops...." message="Cannot find the requested route...something may have been moved"/>
+          </Layout>
         )}/>              
       </Switch>        
     );

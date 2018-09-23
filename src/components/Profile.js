@@ -12,6 +12,7 @@ import ErrorRedirect from './ErrorRedirect';
 
 import * as api from '../utils/api';
 import {truncateString} from '../utils/common';
+import LoadingDialog from './LoadingDialog';
 
 const styles = {
     title:{
@@ -37,10 +38,11 @@ class Profile extends Component {
     state = {
         user: false,
         articles: [],
-        error: false
+        error: false,
+        isLoading:false,
     }
     render() {
-        const {user, articles, error} = this.state;
+        const {user, articles, error, isLoading} = this.state;
         const {classes, user:currentUser, changeLoggedInUser} = this.props;
         return (
             <Fragment>
@@ -58,6 +60,7 @@ class Profile extends Component {
                         </CardContent>
                     </Card>
                 ))}
+                <LoadingDialog isLoading={isLoading}/>
             </Fragment>
         );
     }
@@ -65,12 +68,18 @@ class Profile extends Component {
         this.getUserProfile();
     }
     getUserArticles(username) {
+        this.setState(
+            produce(draft => {
+                draft.isLoading = true;
+            })
+        )
         api.getUserArticles(username)
             .then(response => {
                 let {articles} = response.data;
                 this.setState(
                     produce(draft => {
                         draft.articles = articles;
+                        draft.isLoading = false;
                     })
                 );
             })
@@ -79,6 +88,7 @@ class Profile extends Component {
                 this.setState(
                     produce(draft => {
                         draft.error = status;
+                        draft.isLoading = false;
                     })
                 );
             });              
