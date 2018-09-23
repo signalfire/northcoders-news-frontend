@@ -27,7 +27,7 @@ const styles = {
         paddingLeft:"10px",
         paddingTop:"8px",
         "@media(min-width:768px)": {
-            paddingLeft:"27px",
+            marginLeft:"27px",
         }
     },
     item:{
@@ -44,11 +44,10 @@ const styles = {
         textDecoration:"none"
     },
     button:{
-        paddingRight:"0",
         top:"-3px",
         "@media(min-width:768px)":{
             top:"0",
-            paddingRight:"27px"
+            marginRight:"27px"
         }
     }
 };
@@ -127,6 +126,7 @@ class Topics extends Component {
 }
 
 Topics.propTypes = {
+    location: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     changeSorting: PropTypes.func.isRequired
 }

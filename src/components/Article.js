@@ -94,9 +94,9 @@ class Article extends Component {
 }
 
 Article.propTypes = {
-    match: PropTypes.object.isRequired,
     user: PropTypes.any.isRequired,
-    changeLoggedInUser: PropTypes.func.isRequired
+    changeLoggedInUser: PropTypes.func.isRequired,
+    match: PropTypes.object.isRequired
 }
 
 export default Article;

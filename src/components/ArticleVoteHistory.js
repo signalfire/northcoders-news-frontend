@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import classnames from 'classnames';
 
@@ -52,7 +53,7 @@ const ArticleVoteHistory = (props) => {
     return (
         <Grid container direction="column" justify="center" alignItems="stretch">
             <Grid item>
-                <Typography container="p" className={classnames(classes.history, classes[voted.direction])}><i className={voted.direction === 'up' ? 'fas fa-thumbs-up faa-vertical animated' : 'fas fa-thumbs-down faa-vertical animated'} title={voted.directio==='up' ? 'You voted this article up' : 'You voted this article down'}></i></Typography>
+                <Typography container="p" className={classnames(classes.history, classes[voted.direction])}><i className={voted.direction === 'up' ? 'fas fa-thumbs-up faa-vertical animated' : 'fas fa-thumbs-down faa-vertical animated'} title={voted.direction==='up' ? 'You voted this article up' : 'You voted this article down'}></i></Typography>
             </Grid>
             <Grid item>
                 <Typography container="p"  className={classes.votes}>Voted {voted.direction}</Typography>
@@ -63,5 +64,11 @@ const ArticleVoteHistory = (props) => {
         </Grid>
     );
 };
+
+ArticleVoteHistory.propTypes = {
+    article: PropTypes.object.isRequired,
+    voted: PropTypes.any.isRequired,
+    classes: PropTypes.object.isRequired
+}
 
 export default withStyles(styles)(ArticleVoteHistory);

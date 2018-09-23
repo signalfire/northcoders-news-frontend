@@ -66,8 +66,8 @@ const CommentMeta = (props) => {
 };
 
 CommentMeta.propTypes = {
-    classes: PropTypes.object.isRequired,
     comment: PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired
 }
 
 export default withStyles(styles)(CommentMeta);

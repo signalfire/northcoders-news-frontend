@@ -54,10 +54,11 @@ ArticleContent.propTypes = {
     user: PropTypes.any.isRequired,
     article: PropTypes.object.isRequired,
     children: PropTypes.object.isRequired,
+    voteOnArticle: PropTypes.func.isRequired,
     voteArticleId: PropTypes.any.isRequired,
     direction: PropTypes.string.isRequired,
     classes: PropTypes.object.isRequired,
-    voteOnArticle: PropTypes.func.isRequired,
+    voteHistory: PropTypes.array.isRequired,
     changeLoggedInUser: PropTypes.func.isRequired
 }
 

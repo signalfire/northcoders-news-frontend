@@ -108,6 +108,7 @@ class Profile extends Component {
 
 Profile.propTypes = {
     classes: PropTypes.object.isRequired,
+    user: PropTypes.any.isRequired,
     match: PropTypes.object.isRequired,
     changeLoggedInUser: PropTypes.func.isRequired
 };

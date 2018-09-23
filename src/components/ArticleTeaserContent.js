@@ -1,4 +1,6 @@
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
+
 import { Link } from 'react-router-dom';
 
 import { Typography } from '@material-ui/core';
@@ -35,5 +37,10 @@ const ArticleContent = (props) => {
         </Fragment>
     );
 };
+
+ArticleContent.propType = {
+    article: PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired
+}
 
 export default withStyles(styles)(ArticleContent);

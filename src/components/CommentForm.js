@@ -64,6 +64,7 @@ class CommentForm extends Component {
             this.setState(
                 produce(draft => {
                     draft.body = '';
+                    draft.error = '';
                 })
             );
         }

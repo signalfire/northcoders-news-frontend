@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -24,5 +25,10 @@ const ArticleFullContent = (props) => {
         </Fragment>
     );
 };
+
+ArticleFullContent.propTypes = {
+    article: PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired
+}
 
 export default withStyles(styles)(ArticleFullContent);

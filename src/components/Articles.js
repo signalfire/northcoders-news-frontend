@@ -39,7 +39,7 @@ class Articles extends Component {
             <Fragment>
                 <ErrorRedirect error={error}/>
                 <Typography variant="display1" component="h1">{topic ? topic : 'Latest'} Articles {topic && user && <i className={panelOpen ? 'fa fa-minus-circle' : 'fa fa-plus-circle'} onClick={this.togglePanel}></i>}</Typography>
-                <ArticleForm user={user} panelOpen={panelOpen} addArticle={this.addArticle} togglePanel={this.togglePanel}/>
+                <ArticleForm panelOpen={panelOpen} addArticle={this.addArticle} togglePanel={this.togglePanel}/>
                 <NoArticles isLoading={isLoading} articles={articles} topic={topic} />
                 {articles.map(article => {
                     return (
@@ -179,7 +179,8 @@ class Articles extends Component {
                     })                        
                 );
             });  
-    }    
+    }  
+      
     getSort = () => {
         const sortList = {
             'sort-by-date-desc': {sort: 'created_at', direction: -1},
@@ -215,11 +216,11 @@ class Articles extends Component {
 }
 
 Articles.propTypes = {
+    user: PropTypes.any.isRequired,
+    changeLoggedInUser: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
-    user: PropTypes.any.isRequired,
-    sorting: PropTypes.string.isRequired,
-    changeLoggedInUser: PropTypes.func.isRequired
+    sorting: PropTypes.string.isRequired
 }
 
 export default withStyles(styles)(Articles);

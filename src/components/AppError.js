@@ -17,9 +17,9 @@ const AppError = (props) => {
 };
 
 AppError.propTypes = {
-    classes: PropTypes.object.isRequired,
     title: PropTypes.string.isRequired,
-    message: PropTypes.string.isRequired
+    message: PropTypes.string.isRequired,
+    classes: PropTypes.object.isRequired
 }
 
 export default withStyles(styles)(AppError);

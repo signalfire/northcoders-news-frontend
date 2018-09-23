@@ -21,11 +21,12 @@ class Comments extends Component {
         voteCommentId: '',
         direction: '',
         isLoading:false,
-        error: false
+        error: false,
+        voteHistory: []
     }
 
     render() {
-        const {comments, voteCommentId, direction, error} = this.state;
+        const {comments, voteCommentId, direction, error, voteHistory} = this.state;
         const {user} = this.props;
         return (
             <Fragment>
@@ -33,7 +34,7 @@ class Comments extends Component {
                 {user && <CommentForm addComment={this.addComment}/>}
                 {comments.map(comment => {
                     return (
-                        <Comment key={comment._id} user={user} comment={comment} voteOnContent={this.voteOnComment} deleteComment={this.deleteComment} voteCommentId={voteCommentId} direction={direction}/>
+                        <Comment key={comment._id} user={user} comment={comment} voteOnComment={this.voteOnComment} deleteComment={this.deleteComment} voteCommentId={voteCommentId} direction={direction} voteHistory={voteHistory}/>
                     )
                 })}    
                 <LoadingDialog isLoading={this.state.isLoading}/>                           
@@ -100,7 +101,7 @@ class Comments extends Component {
                     })
                 );
             });              
-    }
+    }   
 
     voteOnComment = (direction, comment) => {
         this.setState(
@@ -111,15 +112,17 @@ class Comments extends Component {
         );
         api.updateCommentVote(comment._id, direction)
             .then(response => {
-                const {comment} = response.data;
+                const {comment:updatedComment} = response.data;
                 this.setState(
                     produce(draft => {
                         const index = draft.comments.findIndex(element => {
                             return element._id === comment._id;
                         });
-                        draft.comments[index] = comment;
+                        updatedComment.votes = direction === 'up' ? comment.votes + 1 : comment.votes - 1;
+                        draft.comments[index] = updatedComment;
                         draft.voteCommentId = false;
-                        draft.direction = '';     
+                        draft.direction = ''; 
+                        draft.voteHistory.push({id: updatedComment._id, direction});    
                     })
                 );
             })
@@ -161,9 +164,9 @@ class Comments extends Component {
 }
 
 Comments.propTypes = {
-    classes: PropTypes.object.isRequired,
     article: PropTypes.object.isRequired,
-    user: PropTypes.any.isRequired
+    user: PropTypes.any.isRequired,
+    classes: PropTypes.object.isRequired
 }
 
 export default withStyles(styles)(Comments);

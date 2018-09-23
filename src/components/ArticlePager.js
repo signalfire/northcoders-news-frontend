@@ -41,7 +41,8 @@ ArticlePager.propTypes = {
     total: PropTypes.number.isRequired,
     current: PropTypes.number.isRequired,
     backPage: PropTypes.func.isRequired,
-    nextPage: PropTypes.func.isRequired
+    nextPage: PropTypes.func.isRequired,
+    classes: PropTypes.object.isRequired
 }
 
 export default withStyles(styles)(ArticlePager);

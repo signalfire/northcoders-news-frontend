@@ -64,8 +64,8 @@ const ArticleMeta = (props) => {
 };
 
 ArticleMeta.propTypes = {
-    classes: PropTypes.object.isRequired,
     article: PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired,
     changeLoggedInUser: PropTypes.func.isRequired
 }
 

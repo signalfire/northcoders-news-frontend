@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {Dialog, CircularProgress} from '@material-ui/core';
 
@@ -10,5 +11,9 @@ const LoadingDialog = (props) => {
         </Dialog>  
     );
 };
+
+LoadingDialog.propTypes = {
+    isLoading: PropTypes.bool.isRequired
+}
 
 export default LoadingDialog;

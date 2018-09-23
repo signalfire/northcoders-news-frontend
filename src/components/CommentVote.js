@@ -32,11 +32,11 @@ const styles = {
 }
 
 const CommentVote = (props) => {
-    const {classes, comment, voteOnContent, voteCommentId, direction} = props;
+    const {classes, comment, voteOnComment, voteCommentId, direction} = props;
     return (
         <Fragment>
-            <Button variant="outlined" disabled={voteCommentId === comment._id && direction ==='up'}  onClick={() => voteOnContent('up', comment)} className={classes.voteUp} style={{marginRight:'1rem'}}><i className={voteCommentId === comment._id && direction === 'up' ? 'fas fa-circle-notch fa-spin' : 'fas fa-thumbs-up'}></i></Button>
-            <Button variant="outlined" disabled={voteCommentId === comment._id && direction ==='down'} onClick={() => voteOnContent('down', comment)} className={classes.voteDown} style={{marginRight:'1rem'}}><i className={voteCommentId === comment._id && direction === 'down' ? 'fas fa-circle-notch fa-spin' : 'fas fa-thumbs-down'}></i></Button>
+            <Button variant="outlined" disabled={voteCommentId === comment._id}  onClick={() => voteOnComment('up', comment)} className={classes.voteUp} style={{marginRight:'1rem'}}><i className={voteCommentId === comment._id && direction === 'up' ? 'fas fa-circle-notch fa-spin' : 'fas fa-thumbs-up'}></i></Button>
+            <Button variant="outlined" disabled={voteCommentId === comment._id} onClick={() => voteOnComment('down', comment)} className={classes.voteDown} style={{marginRight:'1rem'}}><i className={voteCommentId === comment._id && direction === 'down' ? 'fas fa-circle-notch fa-spin' : 'fas fa-thumbs-down'}></i></Button>
         </Fragment>
     );
 };
@@ -44,8 +44,8 @@ const CommentVote = (props) => {
 CommentVote.propTypes = {
     classes: PropTypes.object.isRequired,
     comment: PropTypes.object.isRequired,
-    voteOnContent: PropTypes.func.isRequired,
-    voteCommentId: PropTypes.string.isRequired,
+    voteOnComment: PropTypes.func.isRequired,
+    voteCommentId: PropTypes.any.isRequired,
     direction: PropTypes.string.isRequired
 }
 
