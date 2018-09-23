@@ -7,7 +7,8 @@ import Profile from './components/Profile';
 import Articles from './components/Articles'
 import Article from './components/Article';
 import AppError from './components/AppError';
-import Layout from './components/Layout'
+import Layout from './components/Layout';
+import Leaderboard from './components/Leaderboard';
 
 class App extends Component {
   state = {
@@ -37,6 +38,11 @@ class App extends Component {
             <Profile match={props.match} history={props.history} user={this.state.user} changeLoggedInUser={this.changeLoggedInUser}/>
           </Layout>)}
         /> 
+        <Route exact path="/leaderboard" render={(props) => (
+          <Layout {...props} {...this.state} logoutUser={this.logoutUser} changeSorting={this.changeSorting}>
+            <Leaderboard match={props.match} history={props.history} user={this.state.user} sorting={this.state.sorting} changeLoggedInUser={this.changeLoggedInUser}/>
+          </Layout>)}
+        />        
         <Route path="/404" render={(props) => (
           <Layout {...props} {...this.state} logoutUser={this.logoutUser} changeSorting={this.changeSorting}>
             <AppError title="Whoops..." message="The page you reqested can't be found...sorry about that occasionally I forget what I'm doing...."/>

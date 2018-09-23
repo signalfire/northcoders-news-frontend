@@ -73,6 +73,7 @@ class Topics extends Component {
                             {this.state.topics.map(topic => {
                                 return(<Typography key={topic._id} component="li" className={classes.item}><Link to={`/articles/${topic.slug}`} className={classes.link}>{topic.title}</Link></Typography>)
                             })}
+                            <Typography component="li" className={classes.item}><Link to="/leaderboard" className={classes.link}>Leaderboard</Link></Typography>
                         </Typography>                        
                     </Grid>
                     <Grid item xs={1} style={{textAlign:'right'}}>

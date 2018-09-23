@@ -38,3 +38,6 @@ export const deleteArticleComment = (id) => {
 export const addArticle = (topic, article) => {
     return axios.post(`${API_URL}/topics/${topic}/articles`, article);
 }
+export const getStats = () => {
+    return axios.get(`${API_URL}/stats`);
+}
