@@ -121,7 +121,7 @@ class Topics extends Component {
     }
     disableSort = () => {
         const {location} = this.props;
-        return location.pathname.startsWith('/article/');
+        return location.pathname.startsWith('/article/') || location.pathname.startsWith('/leaderboard');
     }
 }
 
