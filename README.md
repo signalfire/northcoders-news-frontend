@@ -4,7 +4,7 @@ Northcoders News has articles which are divided into topics. Each article has us
 
 Voting, adding comments or adding articles are reserved only to logged in users. Although no “real” authentication system users can login to the system as the user by clicking on a user avatar picture.
 
-Further details of the development can be found [https://github.com/signalfire/FE2-NC-News/dev.pdf](here)
+Further details of the development can be found [here](https://github.com/signalfire/FE2-NC-News/dev.pdf)
 
 ### Getting Started
 
