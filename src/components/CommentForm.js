@@ -7,6 +7,10 @@ import { Typography, Input, Button, Card, CardContent } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = {
+    card: {
+        marginBottom:'2rem',
+        borderRadius:'4px'
+    },
     error: {
         marginBottom:'1rem',
         color:'#721c24',

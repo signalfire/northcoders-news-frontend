@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 
+import { Typography, Card, CardContent } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 import produce from 'immer';
@@ -32,11 +33,13 @@ class Comments extends Component {
             <Fragment>
                 <ErrorRedirect error={error}/>
                 {user && <CommentForm addComment={this.addComment}/>}
-                {comments.map(comment => {
-                    return (
-                        <Comment key={comment._id} user={user} comment={comment} voteOnComment={this.voteOnComment} deleteComment={this.deleteComment} voteCommentId={voteCommentId} direction={direction} voteHistory={voteHistory}/>
-                    )
-                })}    
+                <div id="comments">
+                    {comments.map(comment => {
+                        return (
+                            <Comment key={comment._id} user={user} comment={comment} voteOnComment={this.voteOnComment} deleteComment={this.deleteComment} voteCommentId={voteCommentId} direction={direction} voteHistory={voteHistory}/>
+                        )
+                    })}                  
+                </div>
                 <LoadingDialog isLoading={this.state.isLoading}/>                           
             </Fragment>
         );    
@@ -45,6 +48,14 @@ class Comments extends Component {
     componentDidMount() {
         const {article} = this.props;
         this.getComments(article._id);
+    }
+
+    scrollToComments() {
+        const {location} = this.props;
+        if (location.hash === '#comments'){
+            const el = document.getElementById('comments');
+            el.scrollIntoView({block:'start', inline: 'nearest', behavior:'smooth'});    
+        }
     }
 
     getComments = (article_id) => {
@@ -65,6 +76,7 @@ class Comments extends Component {
                         draft.isLoading = false;
                     })
                 );
+                this.scrollToComments();                
             })
             .catch(err => {
                 const {status} = err.response.data;

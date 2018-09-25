@@ -13,41 +13,47 @@ import ErrorRedirect from './ErrorRedirect';
 
 const styles = {
     bar: {
-        background: "linear-gradient(to bottom, #f5f5f5, #e4e3e3)",
-        paddingTop:"0.5rem",
-        paddingBottom:"0.2rem",
-        "@media(min-width:768px)": {
-            paddingBottom:"0.5rem"
+        background: 'linear-gradient(to bottom, #f5f5f5, #e4e3e3)',
+        paddingTop:'0.5rem',
+        paddingBottom:'0.2rem',
+        '@media(min-width:768px)': {
+            paddingBottom:'0.5rem'
         }
     },
     list:{
-        listStyleType:"none",
-        margin:"0",
-        padding:"0",
-        paddingLeft:"10px",
-        paddingTop:"8px",
-        "@media(min-width:768px)": {
-            marginLeft:"27px",
+        listStyleType:'none',
+        margin:'0',
+        padding:'0',
+        paddingLeft:'10px',
+        paddingTop:'8px',
+        '@media(min-width:768px)': {
+            marginLeft:'27px',
         }
     },
     item:{
-        marginRight:"0.5rem",
-        display:"inline-block",
-        fontSize:"0.9rem", 
-        "@media(min-width:768px)": {
-            fontSize:"1.2rem", 
-            marginRight:"1rem"
+        marginRight:'0.5rem',
+        display:'inline-block',
+        fontSize:'0.9rem', 
+        '&>i':{
+            marginRight:'0.5rem'
+        },
+        '@media(min-width:768px)': {
+            fontSize:'1.2rem', 
+            marginRight:'1rem'
         }
     },
     link:{
-        color:"#000",
-        textDecoration:"none"
+        color:'#000',
+        textDecoration:'none',
+        '&:hover': {
+            color:'#BA1F31'
+        }
     },
     button:{
-        top:"-3px",
-        "@media(min-width:768px)":{
-            top:"0",
-            marginRight:"27px"
+        top:'-3px',
+        '@media(min-width:768px)':{
+            top:'0',
+            marginRight:'27px'
         }
     }
 };
@@ -68,11 +74,11 @@ class Topics extends Component {
                     <Grid item xs={11}>
                         <Typography component="ul" className={classes.list}>
                             <Typography component="li" className={classes.item}>Topics</Typography>
-                            <Typography component="li" className={classes.item}><Link to="/" className={classes.link}>All Articles</Link></Typography>
+                            <Typography component="li" className={classes.item}><i className={this.getTopicIconClass('all')}/><Link to="/" className={classes.link}>All Articles</Link></Typography>
                             {this.state.topics.map(topic => {
-                                return(<Typography key={topic._id} component="li" className={classes.item}><Link to={`/articles/${topic.slug}`} className={classes.link}>{topic.title}</Link></Typography>)
+                                return(<Typography key={topic._id} component="li" className={classes.item}><i className={this.getTopicIconClass(topic.slug)}/><Link to={`/articles/${topic.slug}`} className={classes.link}>{topic.title}</Link></Typography>)
                             })}
-                            <Typography component="li" className={classes.item}><Link to="/leaderboard" className={classes.link}>Leaderboard</Link></Typography>
+                            <Typography component="li" className={classes.item}><i className={this.getTopicIconClass('leaderboard')}/><Link to="/leaderboard" className={classes.link}>Leaderboard</Link></Typography>
                         </Typography>                        
                     </Grid>
                     <Grid item xs={1} style={{textAlign:'right'}}>
@@ -119,6 +125,16 @@ class Topics extends Component {
         this.setState({el: null});
         changeSorting(order);
     }
+    getTopicIconClass = (topic) => {
+        const topics = {
+            all: 'fas fa-globe',
+            leaderboard: 'fas fa-trophy',
+            coding: 'fas fa-laptop-code',      
+            football: 'far fa-futbol',
+            cooking: 'fas fa-utensils' 
+        }
+        return topics[topic];
+    }    
     disableSort = () => {
         const {location} = this.props;
         return location.pathname.startsWith('/article/') || location.pathname.startsWith('/leaderboard');

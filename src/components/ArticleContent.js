@@ -8,9 +8,16 @@ import ArticleMeta from './ArticleMeta';
 import ArticleVoteHistory from './ArticleVoteHistory';
 
 const styles = {
+    content: {
+        borderTopRightRadius:'4px',
+        borderTopLeftRadius:'4px'
+    },
     meta: {
         background: "linear-gradient(to bottom, #f5f5f5, #e4e3e3)",
         color:'#666',
+        borderBottomRightRadius:'4px',
+        borderBottomLeftRadius:'4px', 
+        marginBottom:'2rem',       
         '&>strong': {
             display:'block'
         }
@@ -22,7 +29,7 @@ const ArticleContent = (props) => {
     const voted = voteHistory.find(item => item.id === article._id);
     return (
         <Fragment>
-            <Card style={{marginBottom:'1rem'}}>
+            <Card className={classes.content}>
                 <CardContent>
                     <Grid container spacing={24}>
                         {user && !voted && (

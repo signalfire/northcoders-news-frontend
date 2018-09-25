@@ -25,9 +25,15 @@ export default createMuiTheme({
         },
     },    
     overrides: {
+        MuiChip: {
+            root: {
+                borderRadius:'4px'
+            }
+        },
         MuiCard: {
             root: {
-                marginBottom:'2rem',
+                marginBottom:'0',
+                borderRadius:'0',
             }
         },
         MuiInput: {

@@ -38,7 +38,7 @@ class Articles extends Component {
         return (
             <Fragment>
                 <ErrorRedirect error={error}/>
-                <Typography variant="display1" component="h1">{topic ? topic : 'Latest'} Articles {topic && user && <i className={panelOpen ? 'fa fa-minus-circle' : 'fa fa-plus-circle'} onClick={this.togglePanel}></i>}</Typography>
+                <Typography variant="display1" component="h1">{topic ? topic : 'All'} Articles {topic && user && <i className={panelOpen ? 'fa fa-minus-circle' : 'fa fa-plus-circle'} onClick={this.togglePanel}></i>}</Typography>
                 <ArticleForm panelOpen={panelOpen} addArticle={this.addArticle} togglePanel={this.togglePanel}/>
                 <NoArticles isLoading={isLoading} articles={articles} topic={topic} />
                 {articles.map(article => {

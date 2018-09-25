@@ -21,7 +21,7 @@ class Article extends Component {
     }
     render() {
         const {article, voteArticleId, direction, voteHistory, error} = this.state;
-        const {user, changeLoggedInUser} = this.props;
+        const {user, location, changeLoggedInUser} = this.props;
         return (
             <Fragment>
                 <ErrorRedirect error={error}/>
@@ -30,7 +30,7 @@ class Article extends Component {
                         <ArticleContent article={article} voteArticleId={voteArticleId} direction={direction} user={user} voteOnArticle={this.voteOnArticle} voteHistory={voteHistory} changeLoggedInUser={changeLoggedInUser}>
                             <ArticleFullContent article={article}/>
                         </ArticleContent>
-                        <Comments article={article} user={user}/>                                   
+                        <Comments article={article} user={user} location={location}/>                                   
                     </Fragment>
                 )}
             </Fragment>

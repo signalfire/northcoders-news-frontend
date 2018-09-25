@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { HashLink } from 'react-router-hash-link';
+
 import PropTypes from 'prop-types';
 
 import { Grid, Avatar, Typography } from '@material-ui/core';
@@ -57,7 +59,7 @@ const ArticleMeta = (props) => {
                 </div>                                            
             </Grid>
             <Grid item xs={10} md="auto">
-                <Typography component="p" className={classes.meta}><strong>Comments</strong>{article.comment_count} people have commented on this article</Typography>                                                                                          
+                <Typography component="p" className={classes.meta}><strong>Comments</strong><HashLink to={`/article/${article._id}#comments`} className={classes.link}>{article.comment_count} people have commented on this article</HashLink></Typography>                                                                                          
             </Grid>
         </Grid>
     );

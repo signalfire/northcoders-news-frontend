@@ -9,6 +9,10 @@ import CommentVote from './CommentVote';
 import CommentVoteHistory from './CommentVoteHistory';
 
 const styles = {
+    card: {
+        marginBottom:'2rem',
+        borderRadius:'4px'
+    },
     body: {
         marginBottom:'1rem',
     },   
@@ -44,7 +48,7 @@ class Comment extends Component {
         const voted = voteHistory.find(item => item.id === comment._id);
         return (
             <Fragment>
-                <Card>
+                <Card className={classes.card}>
                     <CardContent>
                         <Typography component="p" className={classes.body}>{comment.body}</Typography>
                         <CommentMeta comment={comment}/> 

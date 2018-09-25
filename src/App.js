@@ -12,7 +12,7 @@ import Leaderboard from './components/Leaderboard';
 
 class App extends Component {
   state = {
-    user: false,
+    user: {_id: "5b8905af0f429b2c867e97e8", username: "cooljmessy", name: "Peter Messy", avatar_url: "https://i.imgur.com/WfX0Neu.jpg", __v: 0},
     sorting: 'sort-by-date-desc'
   }
   render() {
@@ -30,7 +30,7 @@ class App extends Component {
         />
         <Route path="/article/:id" render={(props) => (
           <Layout {...props} {...this.state} logoutUser={this.logoutUser} changeSorting={this.changeSorting}>
-            <Article match={props.match} history={props.history} user={this.state.user} sorting={this.state.sorting} changeLoggedInUser={this.changeLoggedInUser}/>
+            <Article match={props.match} history={props.history} location={props.location} user={this.state.user} sorting={this.state.sorting} changeLoggedInUser={this.changeLoggedInUser}/>
           </Layout>)}
         />
         <Route path="/profile/:username" render={(props) => (
