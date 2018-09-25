@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 
 import produce from 'immer';
@@ -55,6 +56,11 @@ const styles = {
             top:'0',
             marginRight:'27px'
         }
+    },
+    mobile:{
+        '@media(min-width:768px)': {
+            display:'none !important'
+        }
     }
 };
 
@@ -73,6 +79,7 @@ class Topics extends Component {
                 <Grid container>
                     <Grid item xs={11}>
                         <Typography component="ul" className={classes.list}>
+                            <Typography component="li" className={classNames(classes.item, classes.mobile)}><i className="fas fa-bars"></i></Typography>
                             <Typography component="li" className={classes.item}>Topics</Typography>
                             <Typography component="li" className={classes.item}><i className={this.getTopicIconClass('all')}/><Link to="/" className={classes.link}>All Articles</Link></Typography>
                             {this.state.topics.map(topic => {

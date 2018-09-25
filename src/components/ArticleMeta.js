@@ -59,7 +59,7 @@ const ArticleMeta = (props) => {
                 </div>                                            
             </Grid>
             <Grid item xs={10} md="auto">
-                <Typography component="p" className={classes.meta}><strong>Comments</strong><HashLink to={`/article/${article._id}#comments`} className={classes.link}>{article.comment_count} people have commented on this article</HashLink></Typography>                                                                                          
+                <Typography component="p" className={classes.meta}><strong>Comments</strong><HashLink to={`/article/${article._id}#comments`} className={classes.link}>{article.comment_count} people have commented <span className="hide-on-mobile">on this article</span></HashLink></Typography>                                                                                          
             </Grid>
         </Grid>
     );

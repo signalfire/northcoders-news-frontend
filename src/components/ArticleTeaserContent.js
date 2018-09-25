@@ -25,6 +25,10 @@ const styles = {
         textTransform:'capitalize',
         minHeight:'34px',
         border:'1px solid rgba(0, 0, 0, 0.23)',
+        width:'100%',
+        '@media(min-width:768px)': {
+            width:'auto'
+        },
         '& i': {
             marginRight:'0.5rem'
         },

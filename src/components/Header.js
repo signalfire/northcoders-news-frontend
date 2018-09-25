@@ -12,7 +12,10 @@ const styles = {
     title: {
         flexGrow: 1,
         color:'#fff',
-        fontSize:'1.5rem'
+        fontSize:'1rem',
+        '@media(min-width:768px)': {
+            fontSize:'1.5rem'
+        }
     },    
     account: {
         color:'#fff'
