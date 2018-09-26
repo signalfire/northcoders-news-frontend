@@ -11,6 +11,7 @@ const styles = {
         textAlign:'center'
     },
     voteUp:{
+        minWidth:'100%',
         '&:hover': {
             background: 'linear-gradient(to right, #56ab2f, #a8e063)',
             color:'#fff'
@@ -21,6 +22,7 @@ const styles = {
         }        
     },
     voteDown:{
+        minWidth:'100%',
         '&:hover': {
             background: 'linear-gradient(to right, #f00000, #dc281e)',
             color:'#fff'

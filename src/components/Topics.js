@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { Link } from 'react-router-dom';
 
 import produce from 'immer';
 
-import { Typography, Grid, Menu, MenuItem, IconButton } from '@material-ui/core';
+import { Grid, Menu, MenuItem, IconButton } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import MenuIcon from '@material-ui/icons/Menu';
 import { withStyles } from '@material-ui/core/styles';
 
 import * as api from '../utils/api';
@@ -50,53 +49,61 @@ const styles = {
             color:'#BA1F31'
         }
     },
-    button:{
+    sortButton:{
         top:'-3px',
         '@media(min-width:768px)':{
             top:'0',
-            marginRight:'27px'
         }
     },
-    mobile:{
+    menuButton:{
+        marginLeft:'0',
+        '@media(min-width:768px)':{
+            marginLeft:'12px'
+        }
+    },
+    showOnMobile:{
         '@media(min-width:768px)': {
             display:'none !important'
         }
-    }
+    },
 };
 
 class Topics extends Component {
     state = {
         topics: [],
-        el: null,
-        error: false
+        sortMenuEl: null,
+        mobileMenuEl: null,
+        error: false,
+        open: false
     }
     render() {
         const {classes} = this.props;
-        const {el, error} = this.state;
+        const {sortMenuEl, mobileMenuEl, error} = this.state;
         return (
             <div className={classes.bar}>
                 <ErrorRedirect error={error}/>
-                <Grid container>
-                    <Grid item xs={11}>
-                        <Typography component="ul" className={classes.list}>
-                            <Typography component="li" className={classNames(classes.item, classes.mobile)}><i className="fas fa-bars"></i></Typography>
-                            <Typography component="li" className={classes.item}>Topics</Typography>
-                            <Typography component="li" className={classes.item}><i className={this.getTopicIconClass('all')}/><Link to="/" className={classes.link}>All Articles</Link></Typography>
+                <Grid container spacing={0}>
+                    <Grid item xs={6}>
+                        <IconButton aria-owns={mobileMenuEl ? 'mobile-menu' : null} aria-haspopup="true" onClick={this.handleMobileMenuClick} className={classes.menuButton}>
+                            <MenuIcon/>
+                        </IconButton>
+                        <Menu id="mobile-menu" anchorEl={mobileMenuEl} open={Boolean(mobileMenuEl)} onClose={this.handleMobileMenuClose}>
+                            <MenuItem key="all" onClick={() => this.handleMobileMenuClose('all')}>All Articles</MenuItem>
                             {this.state.topics.map(topic => {
-                                return(<Typography key={topic._id} component="li" className={classes.item}><i className={this.getTopicIconClass(topic.slug)}/><Link to={`/articles/${topic.slug}`} className={classes.link}>{topic.title}</Link></Typography>)
+                                return (<MenuItem key={topic.slug} onClick={() => this.handleMobileMenuClose(topic.slug)}>{topic.title}</MenuItem>)
                             })}
-                            <Typography component="li" className={classes.item}><i className={this.getTopicIconClass('leaderboard')}/><Link to="/leaderboard" className={classes.link}>Leaderboard</Link></Typography>
-                        </Typography>                        
+                            <MenuItem key="leaderboard" onClick={() => this.handleMobileMenuClose('leaderboard')}>Leaderboard</MenuItem>
+                        </Menu>    
                     </Grid>
-                    <Grid item xs={1} style={{textAlign:'right'}}>
-                        <IconButton aria-owns={el ? 'sort-menu' : null} aria-haspopup="true" disabled={this.disableSort()} onClick={this.handleClick} className={classes.button}>
+                    <Grid item xs={6} style={{textAlign:'right'}}>
+                        <IconButton aria-owns={sortMenuEl ? 'sort-menu' : null} aria-haspopup="true" disabled={this.disableSort()} onClick={this.handleSortClick} className={classes.sortButton}>
                             <MoreVertIcon/>
                         </IconButton>
-                        <Menu id="sort-menu" anchorEl={el} open={Boolean(el)} onClose={this.handleClose}>
-                            <MenuItem onClick={() => this.handleClose('sort-by-date-desc')}>Sort By Date (Newest First)</MenuItem>
-                            <MenuItem onClick={() => this.handleClose('sort-by-date-asc')}>Sort By Date (Oldest First)</MenuItem>
-                            <MenuItem onClick={() => this.handleClose('sort-by-title-asc')}>Sort By Title (A-Z)</MenuItem>
-                            <MenuItem onClick={() => this.handleClose('sort-by-title-desc')}>Sort By Title (Z-A)</MenuItem>
+                        <Menu id="sort-menu" anchorEl={sortMenuEl} open={Boolean(sortMenuEl)} onClose={this.handleSortClose}>
+                            <MenuItem onClick={() => this.handleSortClose('sort-by-date-desc')}>Sort By Date (Newest First)</MenuItem>
+                            <MenuItem onClick={() => this.handleSortClose('sort-by-date-asc')}>Sort By Date (Oldest First)</MenuItem>
+                            <MenuItem onClick={() => this.handleSortClose('sort-by-title-asc')}>Sort By Title (A-Z)</MenuItem>
+                            <MenuItem onClick={() => this.handleSortClose('sort-by-title-desc')}>Sort By Title (Z-A)</MenuItem>
                         </Menu>                        
                     </Grid>
                 </Grid>
@@ -123,14 +130,28 @@ class Topics extends Component {
             });  
     }
 
-    handleClick = (event) => {
-        this.setState({el:event.currentTarget});
+    handleSortClick = (event) => {
+        this.setState({sortMenuEl: event.currentTarget});
     }
-
-    handleClose = (order) => {
+    handleMobileMenuClick = (event) => {
+        this.setState({mobileMenuEl: event.currentTarget});
+    }
+    handleSortClose = (order) => {
         const {changeSorting} = this.props;
-        this.setState({el: null});
+        this.setState({sortMenuEl: null});
         changeSorting(order);
+    }
+    handleMobileMenuClose = (target) => {
+        const {history} = this.props;
+        const destinations = {
+            all: '/',
+            coding: '/articles/coding',
+            cooking: '/articles/cooking',
+            football: '/articles/football',
+            leaderboard: '/leaderboard'
+        }
+        this.setState({mobileMenuEl: null});
+        history.push(destinations[target]);
     }
     getTopicIconClass = (topic) => {
         const topics = {
@@ -145,6 +166,9 @@ class Topics extends Component {
     disableSort = () => {
         const {location} = this.props;
         return location.pathname.startsWith('/article/') || location.pathname.startsWith('/leaderboard');
+    }
+    isOnMobile = () => {
+        return window.innerWidth < 768;
     }
 }
 
