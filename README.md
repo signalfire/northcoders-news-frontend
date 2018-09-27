@@ -4,13 +4,13 @@ Northcoders News has articles which are divided into topics. Each article has us
 
 Voting, adding comments or adding articles are reserved only to logged in users. Although no “real” authentication system users can login to the system as the user by clicking on a user avatar picture.
 
-Further details of the development can be found [here](https://github.com/signalfire/FE2-NC-News/blob/master/dev.pdf)
+Further details of the development can be found [here](https://github.com/signalfire/northcoders-news-frontend/blob/master/dev.pdf)
 
 ### Getting Started
 
 To see the project in action go [https://northcoders-news-rgcfe.herokuapp.com](https://northcoders-news-rgcfe.herokuapp.com)
 
-The API in use for this project is available [https://northcoders-news-rgc.herokuapp.com/api](https://northcoders-news-rgc.herokuapp.com/api) with the source code for this project available at [https://github.com/signalfire/BE2-northcoders-news](https://github.com/signalfire/BE2-northcoders-news)
+The API in use for this project is available [https://northcoders-news-rgc.herokuapp.com/api](https://northcoders-news-rgc.herokuapp.com/api) with the source code for this project available at [https://github.com/signalfire/northcoders-news-backend](https://github.com/signalfire/northcoders-news-backend)
 
 ### Prerequisites
 
