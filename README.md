@@ -8,8 +8,6 @@ Further details of the development can be found [here](https://github.com/signal
 
 ### Getting Started
 
-To see the project in action go [https://northcoders-news-rgcfe.herokuapp.com](https://northcoders-news-rgcfe.herokuapp.com)
-
 The API in use for this project is available [https://northcoders-news-rgc.herokuapp.com/api](https://northcoders-news-rgc.herokuapp.com/api) with the source code for this project available at [https://github.com/signalfire/northcoders-news-backend](https://github.com/signalfire/northcoders-news-backend)
 
 ### Prerequisites
